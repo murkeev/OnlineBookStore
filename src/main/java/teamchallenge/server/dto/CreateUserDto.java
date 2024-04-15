@@ -7,7 +7,6 @@ import lombok.Data;
 import teamchallenge.server.annotation.UniqueEmail;
 
 
-
 @Data
 public class CreateUserDto {
 
@@ -22,6 +21,6 @@ public class CreateUserDto {
     public String lastName;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 8)
     public String password;
 }

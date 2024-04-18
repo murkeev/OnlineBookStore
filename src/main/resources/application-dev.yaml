@@ -9,9 +9,10 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-coghsrsf7o1s73fvct80-a.oregon-postgres.render.com/database_bqyj
-    username: database_bqyj_user
-    password: wAfpfhecarb3ml15y4lmYGeNLV4ohWpV
+    url: jdbc:postgresql://localhost:5432/teamChallenge
+    username: postgres
+    password: 123
+
 
 logging:
   level:

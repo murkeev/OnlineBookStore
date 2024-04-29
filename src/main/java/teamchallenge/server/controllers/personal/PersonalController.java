@@ -1,4 +1,4 @@
-package teamchallenge.server.controllers;
+package teamchallenge.server.controllers.personal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/admin")
-public class AdminController {
+@RequestMapping("api/personal")
+public class PersonalController {
 
     @PostMapping
     public String test() {
-        return "Hello Admin!";
+        return "Hello User!";
     }
 }

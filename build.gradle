@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'teamchallenge'
-version = '0.0.1-SNAPSHOT'
+version = '1'
 
 java {
 	sourceCompatibility = '17'
@@ -22,7 +22,6 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -39,4 +38,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+jar {
+	manifest {
+		attributes 'Main-Class': 'teamchallenge.server.ServerApplication'
+	}
 }

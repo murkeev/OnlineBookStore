@@ -30,6 +30,11 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    @PostMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("Test");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginUserDto loginUserDto) {
 

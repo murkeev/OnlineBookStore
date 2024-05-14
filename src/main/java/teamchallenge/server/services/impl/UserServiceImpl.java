@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.dto.CreateUserDto;
+import teamchallenge.server.dto.ResponseUserDto;
 import teamchallenge.server.entities.Role;
 import teamchallenge.server.entities.User;
+import teamchallenge.server.exception.UserNotFoundException;
 import teamchallenge.server.repositories.UserRepository;
 import teamchallenge.server.services.RoleService;
 import teamchallenge.server.services.UserService;
@@ -44,6 +46,11 @@ public class UserServiceImpl implements UserDetailsService, UserService{
     }
 
     @Override
+    public ResponseUserDto getUserById(Long id) {
+        return userRepository.findById(id).map(this::mapToResponseUserDto).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = findByEmail(email);
@@ -68,5 +75,15 @@ public class UserServiceImpl implements UserDetailsService, UserService{
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    private ResponseUserDto mapToResponseUserDto(User user) {
+        return ResponseUserDto
+                .builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .build();
     }
 }

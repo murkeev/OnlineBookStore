@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/open/**").permitAll()
                         .requestMatchers("/api/personal/**").hasRole("PERSONAL")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/v3/**", "/webjars/**").permitAll()

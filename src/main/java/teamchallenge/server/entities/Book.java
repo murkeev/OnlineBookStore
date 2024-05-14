@@ -36,8 +36,9 @@ public class Book {
 
     private int year;
 
-    @OneToMany
-    private List<Image> images;
+    @OneToOne
+    private Image images;
+
 
     private double price;
 
@@ -46,4 +47,5 @@ public class Book {
 
     private boolean isExpected;
 
+    private Integer discount;
 }

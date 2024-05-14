@@ -23,7 +23,7 @@ import teamchallenge.server.utils.JwtUtils;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/auth/")
+@RequestMapping("api/open/auth")
 @Validated
 public class AuthController {
     private final UserService userService;

@@ -1,9 +1,8 @@
 package teamchallenge.server.services;
 
 import teamchallenge.server.dto.CreateUserDto;
+import teamchallenge.server.dto.ResponseUserDto;
 import teamchallenge.server.entities.User;
-
-import java.util.Optional;
 
 public interface UserService {
 
@@ -14,4 +13,5 @@ public interface UserService {
 
     void save(User user);
 
+    ResponseUserDto getUserById(Long id);
 }

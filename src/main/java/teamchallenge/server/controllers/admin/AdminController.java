@@ -1,13 +1,15 @@
 package teamchallenge.server.controllers.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import teamchallenge.server.dto.CreateBookDto;
+import teamchallenge.server.dto.ResponseBookDto;
 import teamchallenge.server.services.BookService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +19,13 @@ public class AdminController {
     private final BookService bookService;
 
     @PostMapping("/book")
-    public ResponseEntity<?> createBook(@RequestBody CreateBookDto createBookDto) {
-        bookService.createBook(createBookDto);
+    public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(createBookDto));
+    }
+
+    @PostMapping("/book/{id}/images")
+    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id){
+        bookService.saveImages(id,images);
         return ResponseEntity.ok("");
     }
 }

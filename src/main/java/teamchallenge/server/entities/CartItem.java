@@ -1,18 +1,22 @@
 package teamchallenge.server.entities;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import lombok.Data;
 
+@Entity
+@Data
 public class CartItem {
     @Id
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
 
-    private Long itemNumber;
+    @ManyToOne
+    @JoinColumn(name = "cart_header_id")
+    private CartHeader cartHeader;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "book_id")
-    private Long bookId;
+    private Book book;
 
     private Double price;
 

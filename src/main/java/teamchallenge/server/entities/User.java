@@ -30,4 +30,6 @@ public class User {
     )
     private List<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CartHeader cartHeader;
 }

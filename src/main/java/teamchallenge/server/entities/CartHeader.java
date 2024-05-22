@@ -12,17 +12,12 @@ public class CartHeader {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    @JoinTable(
-            name = "cart_header_cart_item",
-            joinColumns = @JoinColumn(name = "cart_header_id"),
-            inverseJoinColumns = @JoinColumn(name = "cart_item_id")
-    )
-    private List<CartItem> cartItems;
-
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Long userId;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "cart_header", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
 
     private Double totalPrice;
 }

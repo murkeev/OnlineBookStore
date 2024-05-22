@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserDetailsService, UserService{
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
         userRepository.save(user);
+
+        findByEmail(user.getEmail()).getId();
     }
     @Override
     public boolean existsByEmail(String email) {

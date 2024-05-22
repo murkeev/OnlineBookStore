@@ -1,9 +1,10 @@
-package teamchallenge.server.controllers.cart;
+package teamchallenge.server.controllers.open;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import teamchallenge.server.dto.ChangeBookQuantityInCartDto;
 import teamchallenge.server.entities.CartHeader;
 import teamchallenge.server.services.impl.CartServiceImpl;
 import teamchallenge.server.utils.JwtUtils;
@@ -40,14 +41,14 @@ public class CartController {
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<?> addProductToCart(@RequestParam String token, @RequestParam Long productId, @RequestParam Long quantity) {
-        String email = jwtUtils.getEmail(token);
-        return ResponseEntity.ok(cartService.addBook(email, productId, quantity));
+    public ResponseEntity<?> addProductToCart(@RequestParam ChangeBookQuantityInCartDto request) {
+        String email = jwtUtils.getEmail(request.getToken());
+        return ResponseEntity.ok(cartService.addBook(email, request.getProductId(), request.getQuantity()));
     }
 
     @DeleteMapping("/remove-book")
-    public ResponseEntity<?> removeProductFromCart(@RequestParam String token, @RequestParam Long productId, @RequestParam Long quantity) {
-        String email = jwtUtils.getEmail(token);
-        return ResponseEntity.ok(cartService.removeBook(email, productId, quantity));
+    public ResponseEntity<?> removeProductFromCart(@RequestParam ChangeBookQuantityInCartDto request) {
+        String email = jwtUtils.getEmail(request.getToken());
+        return ResponseEntity.ok(cartService.removeBook(email, request.getProductId(), request.getQuantity()));
     }
 }

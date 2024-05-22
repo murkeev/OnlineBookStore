@@ -16,7 +16,7 @@ public class CartHeader {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "cart_header", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cartHeader", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
     private Double totalPrice;

@@ -41,13 +41,13 @@ public class CartController {
     }
 
     @PostMapping("/add-book")
-    public ResponseEntity<?> addProductToCart(@RequestParam ChangeBookQuantityInCartDto request) {
+    public ResponseEntity<?> addBookToCart(@RequestParam ChangeBookQuantityInCartDto request) {
         String email = jwtUtils.getEmail(request.getToken());
         return ResponseEntity.ok(cartService.addBook(email, request.getProductId(), request.getQuantity()));
     }
 
     @DeleteMapping("/remove-book")
-    public ResponseEntity<?> removeProductFromCart(@RequestParam ChangeBookQuantityInCartDto request) {
+    public ResponseEntity<?> removeBookFromCart(@RequestParam ChangeBookQuantityInCartDto request) {
         String email = jwtUtils.getEmail(request.getToken());
         return ResponseEntity.ok(cartService.removeBook(email, request.getProductId(), request.getQuantity()));
     }

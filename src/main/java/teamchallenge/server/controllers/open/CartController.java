@@ -9,8 +9,6 @@ import teamchallenge.server.entities.CartHeader;
 import teamchallenge.server.services.impl.CartServiceImpl;
 import teamchallenge.server.utils.JwtUtils;
 
-import java.util.List;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/cart")
@@ -42,13 +40,11 @@ public class CartController {
 
     @PostMapping("/add-book")
     public ResponseEntity<?> addBookToCart(@RequestParam ChangeBookQuantityInCartDto request) {
-        String email = jwtUtils.getEmail(request.getToken());
-        return ResponseEntity.ok(cartService.addBook(email, request.getProductId(), request.getQuantity()));
+        return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity()));
     }
 
     @DeleteMapping("/remove-book")
     public ResponseEntity<?> removeBookFromCart(@RequestParam ChangeBookQuantityInCartDto request) {
-        String email = jwtUtils.getEmail(request.getToken());
-        return ResponseEntity.ok(cartService.removeBook(email, request.getProductId(), request.getQuantity()));
+        return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity()));
     }
 }

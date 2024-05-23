@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ChangeBookQuantityInCartDto {
-    String token;
-    Long productId;
+    Long bookId;
     Long quantity;
 }

@@ -3,6 +3,9 @@ package teamchallenge.server.services.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.entities.Book;
@@ -64,7 +67,10 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     @Transactional
-    public CartHeader addBook(String email, Long bookId, Long quantity) {
+    public CartHeader addBook(Long bookId, Long quantity) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", email)));
         CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Cart not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
@@ -81,7 +87,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartHeader removeBook(String email, Long bookId, Long quantity) {
+    public CartHeader removeBook(Long bookId, Long quantity) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", email)));
         CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Cart not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));

@@ -20,8 +20,8 @@ public interface CartService {
 
     List<CartItem> getCartByUser(String email);
 
-    CartHeader addBook(String email, Long bookId, Long quantity);
+    CartHeader addBook(Long bookId, Long quantity);
 
-    CartHeader removeBook(String email, Long bookId, Long quantity);
+    CartHeader removeBook(Long bookId, Long quantity);
 
 }

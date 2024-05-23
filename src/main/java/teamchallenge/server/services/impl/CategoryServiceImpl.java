@@ -1,6 +1,7 @@
 package teamchallenge.server.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.entities.Category;
 import teamchallenge.server.repositories.CategoryRepository;
@@ -20,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> result = new ArrayList<>();
 
         for (String categoryName : categories) {
-            Category category = categoryRepository.findByName(categoryName).orElse(createAndGetCategory(categoryName));
+            Category category = categoryRepository.findByName(WordUtils.capitalize(categoryName.toLowerCase())).orElse(createAndGetCategory(categoryName));
             result.add(category);
         }
         return result;
@@ -28,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private Category createAndGetCategory(String name){
         Category category = new Category();
-        category.setName(name);
+        category.setName(WordUtils.capitalize(name.toLowerCase()));
         categoryRepository.save(category);
         return category;
     }

@@ -23,12 +23,17 @@ import teamchallenge.server.utils.JwtUtils;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/auth/")
+@RequestMapping("api/open/auth")
 @Validated
 public class AuthController {
     private final UserService userService;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+
+    @PostMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("Test");
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginUserDto loginUserDto) {

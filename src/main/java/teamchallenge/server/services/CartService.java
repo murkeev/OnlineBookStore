@@ -1,5 +1,6 @@
 package teamchallenge.server.services;
 
+import teamchallenge.server.dto.CartHeaderDto;
 import teamchallenge.server.dto.CreateBookDto;
 import teamchallenge.server.entities.CartHeader;
 import teamchallenge.server.entities.CartItem;
@@ -8,20 +9,22 @@ import teamchallenge.server.entities.User;
 import java.util.List;
 
 public interface CartService {
-    public List<CartHeader> getAllCartHeaders();
-    public CartHeader getCartHeaderById(Long id);
+    public List<CartHeaderDto> getAllCartHeaders();
+    public CartHeaderDto getCartHeaderById(Long id);
 
-    public CartHeader saveCartHeader(CartHeader cartHeader);
+    public Long saveCartHeader(CartHeader cartHeader);
 
     public void deleteCartHeader(Long id);
 
 
-    void createCart(User user);
+    Long createCart(User user);
 
-    List<CartItem> getCartByUser(String email);
+    CartHeaderDto getCartByUser(String email);
 
-    CartHeader addBook(Long bookId, Long quantity);
+    CartHeaderDto addBook(Long bookId, Long quantity);
 
-    CartHeader removeBook(Long bookId, Long quantity);
+    CartHeaderDto removeBook(Long bookId, Long quantity);
+
+    CartHeaderDto removeAllBooks();
 
 }

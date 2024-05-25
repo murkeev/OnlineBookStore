@@ -1,7 +1,10 @@
 package teamchallenge.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,11 +16,13 @@ public class CartHeader {
     private Long id;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "cartHeader", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
-    private Double totalPrice;
+    private Double totalPrice = (double) 0;
 }

@@ -16,6 +16,8 @@ import teamchallenge.server.entities.Book;
 import teamchallenge.server.entities.CartHeader;
 import teamchallenge.server.entities.CartItem;
 import teamchallenge.server.entities.User;
+import teamchallenge.server.exception.BookNotFoundException;
+import teamchallenge.server.exception.CartHeaderNotFoundException;
 import teamchallenge.server.mappers.CartHeaderMapper;
 import teamchallenge.server.repositories.BookRepository;
 import teamchallenge.server.repositories.CartHeaderRepository;
@@ -67,11 +69,11 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public Long createCart(User user) {
+    public CartHeader createCart(User user) {
         CartHeader cartHeader = new CartHeader();
         cartHeader.setUser(user);
-        CartHeader savedCartHeader = cartHeaderRepository.save(cartHeader);
-        return savedCartHeader.getId();
+        return cartHeaderRepository.save(cartHeader);
+        //userService.save(user);
     }
     @Override
     public CartHeaderDto getCartByUser(String email) {
@@ -84,8 +86,8 @@ public class CartServiceImpl implements CartService {
         String email = authentication.getPrincipal().toString();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", email)));
-        CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Cart not found"));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+        CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new CartHeaderNotFoundException(user));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
 
         CartItem cartItem = cartItemRepository.findByCartHeaderAndBook(cartHeader, book).orElse(new CartItem());
         cartItem.setCartHeader(cartHeader);
@@ -113,8 +115,8 @@ public class CartServiceImpl implements CartService {
             String email = authentication.getPrincipal().toString();
 
             User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", email)));
-            CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Cart not found"));
-            Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+            CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new CartHeaderNotFoundException(user));
+            Book book = bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
 
             CartItem cartItem = cartItemRepository.findByCartHeaderAndBook(cartHeader, book).orElseThrow(() -> new RuntimeException("Book in cart not found"));
 
@@ -155,7 +157,7 @@ public class CartServiceImpl implements CartService {
         String email = authentication.getPrincipal().toString();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", email)));
-        CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Cart not found"));
+        CartHeader cartHeader = cartHeaderRepository.findByUser(user).orElseThrow(() -> new CartHeaderNotFoundException(user));
 
         for (CartItem cartItem : cartHeader.getCartItems()) {
             cartItemRepository.delete(cartItem);

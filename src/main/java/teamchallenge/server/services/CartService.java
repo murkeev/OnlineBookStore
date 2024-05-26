@@ -9,15 +9,15 @@ import teamchallenge.server.entities.User;
 import java.util.List;
 
 public interface CartService {
-    public List<CartHeaderDto> getAllCartHeaders();
-    public CartHeaderDto getCartHeaderById(Long id);
+    List<CartHeaderDto> getAllCartHeaders();
+    CartHeaderDto getCartHeaderById(Long id);
 
-    public Long saveCartHeader(CartHeader cartHeader);
+    Long saveCartHeader(CartHeader cartHeader);
 
-    public void deleteCartHeader(Long id);
+    void deleteCartHeader(Long id);
 
 
-    Long createCart(User user);
+    CartHeader createCart(User user);
 
     CartHeaderDto getCartByUser(String email);
 

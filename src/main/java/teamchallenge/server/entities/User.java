@@ -1,7 +1,9 @@
 package teamchallenge.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -30,4 +32,8 @@ public class User {
     )
     private List<Role> roles;
 
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private CartHeader cartHeader;
 }

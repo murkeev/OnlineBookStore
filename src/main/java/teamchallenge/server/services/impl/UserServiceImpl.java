@@ -16,6 +16,7 @@ import teamchallenge.server.entities.Role;
 import teamchallenge.server.entities.User;
 import teamchallenge.server.exception.UserNotFoundException;
 import teamchallenge.server.repositories.UserRepository;
+import teamchallenge.server.services.CartService;
 import teamchallenge.server.services.RoleService;
 import teamchallenge.server.services.UserService;
 
@@ -28,6 +29,13 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 
     private final UserRepository userRepository;
     private final RoleService roleService;
+
+
+    private CartService cartService;
+    @Autowired
+    public void cartService(@Lazy CartService cartService) {
+        this.cartService = cartService;
+    }
 
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -63,6 +71,7 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 
 
     @Override
+    @Transactional
     public void createUser(CreateUserDto createUserDto) {
         User user = new User();
         user.setFirstName(createUserDto.getFirstName());
@@ -70,7 +79,11 @@ public class UserServiceImpl implements UserDetailsService, UserService{
         user.setEmail(createUserDto.getEmail());
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
+
+        user.setCartHeader(cartService.createCart(user));
         userRepository.save(user);
+
+        //findByEmail(user.getEmail()).getId();
     }
     @Override
     public boolean existsByEmail(String email) {

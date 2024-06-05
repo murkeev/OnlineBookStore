@@ -1,3 +1,7 @@
+INSERT INTO roles (name) VALUES ('ROLE_PERSONAL');
+INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
+
+
 INSERT INTO category (name) VALUES ('Дитяча література');
 INSERT INTO category (name) VALUES ('Хоббі і дозвілля');
 INSERT INTO category (name) VALUES ('Художня література');

@@ -6,9 +6,10 @@ jwt:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:32769/teamChallenge
+    url: jdbc:postgresql://localhost:32768/teamChallenge
     username: postgres
     password: 1234
+    sql-script-encoding: UTF-8
     hikari:
       connection-init-sql: SET NAMES 'UTF8'
   jpa:
@@ -18,6 +19,8 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        connection:
+          charSet: UTF-8
         format_sql: true
   sql:
     init:

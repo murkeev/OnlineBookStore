@@ -37,6 +37,24 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+	systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+	systemProperty 'file.encoding', 'UTF-8'
+}
+
+processResources {
+	filesMatching('**/*.sql') {
+		filter { String line -> line.getBytes('UTF-8') }
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

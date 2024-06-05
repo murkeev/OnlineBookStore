@@ -4,15 +4,28 @@ jwt:
   lifetime: 7d
 
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:32770/teamChallenge
+    url: jdbc:postgresql://localhost:32768/teamChallenge
     username: postgres
     password: 1234
+    sql-script-encoding: UTF-8
+    hikari:
+      connection-init-sql: SET NAMES 'UTF8'
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        connection:
+          charSet: UTF-8
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
 
 
 logging:

@@ -32,9 +32,12 @@ public class Book {
     )
     private List<Author> authors;
 
+    @Column(length = 2000)
     private String description;
 
     private int year;
+
+    private String language;
 
     @OneToOne
     private Image images;

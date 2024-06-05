@@ -1,35 +1,35 @@
 
-jwt:
-  secret: as542d54fkja656s7h6ndfjas1241234kdnsadiojfkjasdk1123rjkj34
-  lifetime: 7d
+  jwt:
+    secret: as542d54fkja656s7h6ndfjas1241234kdnsadiojfkjasdk1123rjkj34
+    lifetime: 7d
 
-spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:32768/teamChallenge
-    username: postgres
-    password: 1234
-    sql-script-encoding: UTF-8
-    hikari:
-      connection-init-sql: SET NAMES 'UTF8'
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
+  spring:
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/teamChallenge
+      username: postgres
+      password: 123
+      hikari:
+        connection-init-sql: SET NAMES 'UTF8'
+    jpa:
+      defer-datasource-initialization: true
       hibernate:
-        connection:
-          charSet: UTF-8
-        format_sql: true
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:db/data.sql
+        ddl-auto: create
+      show-sql: true
+      properties:
+        hibernate:
+          connection:
+            charSet: UTF-8
+          format_sql: true
+    sql:
+      init:
+        mode: always
+        data-locations: classpath:db/data.sql
+        encoding: UTF-8
 
 
-logging:
-  level:
-    org:
-      springframework:
-        security=DEBUG:
+  logging:
+    level:
+      org:
+        springframework:
+          security=DEBUG:

@@ -37,15 +37,15 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
 	systemProperty 'file.encoding', 'UTF-8'
 }
 
-tasks.withType(JavaExec) {
+tasks.withType(JavaExec).configureEach {
 	systemProperty 'file.encoding', 'UTF-8'
 }
 

@@ -1,7 +1,6 @@
 package teamchallenge.server.utils;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import teamchallenge.server.entities.User;
@@ -19,7 +18,7 @@ public class AdminGenerationUtil {
 
     private final PasswordEncoder passwordEncoder;
 
-//    @Scheduled(fixedRate = 10000)
+    //    @Scheduled(fixedRate = 10000)
     public void generateAdmin() {
         User admin = new User();
         admin.setEmail("admin@mail.com");

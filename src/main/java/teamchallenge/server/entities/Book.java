@@ -2,9 +2,10 @@ package teamchallenge.server.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 
 
 @Entity
@@ -51,4 +52,7 @@ public class Book {
     private boolean isExpected;
 
     private Integer discount;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 }

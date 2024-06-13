@@ -7,8 +7,6 @@ import teamchallenge.server.dto.CreateBookDto;
 import teamchallenge.server.dto.ListResponseBookDto;
 import teamchallenge.server.dto.ResponseBookDto;
 
-import java.util.List;
-
 public interface BookService {
     ResponseBookDto createBook(CreateBookDto createBookDto);
 
@@ -16,5 +14,5 @@ public interface BookService {
 
     ResponseBookDto getBookById(Long id);
 
-    Page<ListResponseBookDto> getBooks(Pageable pageable);
+    Page<ListResponseBookDto> getBooks(Pageable pageable, Long category);
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Image{
+public class Image {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private long id;

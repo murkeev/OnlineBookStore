@@ -1,15 +1,14 @@
 package teamchallenge.server.services;
 
 import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.dto.CreateBookDto;
 import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.entities.CartItem;
 import teamchallenge.server.entities.User;
 
 import java.util.List;
 
 public interface CartService {
     List<CartHeaderDto> getAllCartHeaders();
+
     CartHeaderDto getCartHeaderById(Long id);
 
     Long saveCartHeader(CartHeader cartHeader);

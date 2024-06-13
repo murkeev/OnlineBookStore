@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.dto.CartHeaderDto;
@@ -24,7 +22,6 @@ import teamchallenge.server.repositories.CartHeaderRepository;
 import teamchallenge.server.repositories.CartItemRepository;
 import teamchallenge.server.repositories.UserRepository;
 import teamchallenge.server.services.CartService;
-import teamchallenge.server.utils.JwtUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,15 +50,18 @@ public class CartServiceImpl implements CartService {
                 .map(cartHeaderMapper::toDto)
                 .collect(Collectors.toList());
     }
+
     @Override
     public CartHeaderDto getCartHeaderById(Long id) {
         CartHeader cartHeader = cartHeaderRepository.findById(id).orElseThrow(() -> new RuntimeException("Cart not found"));
         return cartHeaderMapper.toDto(cartHeader);
     }
+
     @Override
     public Long saveCartHeader(CartHeader cartHeader) {
         return cartHeaderRepository.save(cartHeader).getId();
     }
+
     @Override
     public void deleteCartHeader(Long id) {
         cartHeaderRepository.deleteById(id);
@@ -75,10 +75,12 @@ public class CartServiceImpl implements CartService {
         return cartHeaderRepository.save(cartHeader);
         //userService.save(user);
     }
+
     @Override
     public CartHeaderDto getCartByUser(String email) {
         return cartHeaderMapper.toDto(userService.findByEmail(email).getCartHeader());
     }
+
     @Override
     @Transactional
     public CartHeaderDto addBook(Long bookId, Long quantity) {
@@ -96,7 +98,7 @@ public class CartServiceImpl implements CartService {
         cartHeader.setTotalPrice(cartHeader.getTotalPrice() - cartItem.getPrice());
 
         cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        cartItem.setPrice(cartItem.getQuantity()*book.getPrice());
+        cartItem.setPrice(cartItem.getQuantity() * book.getPrice());
 
         cartHeader.setTotalPrice(cartHeader.getTotalPrice() + cartItem.getPrice());
 
@@ -152,7 +154,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartHeaderDto removeAllBooks(){
+    public CartHeaderDto removeAllBooks() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getPrincipal().toString();
 

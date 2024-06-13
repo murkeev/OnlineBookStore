@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.entities.Category;
+import teamchallenge.server.exception.CategoryNotFoundException;
 import teamchallenge.server.repositories.CategoryRepository;
 import teamchallenge.server.services.CategoryService;
 
@@ -27,14 +28,24 @@ public class CategoryServiceImpl implements CategoryService {
         return result;
     }
 
-    private Category createAndGetCategory(String name){
+    @Override
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
+
+    private Category createAndGetCategory(String name) {
         Category category = new Category();
         category.setName(WordUtils.capitalize(name.toLowerCase()));
         categoryRepository.save(category);
         return category;
     }
 
-    public void createCategory(String name){
+    public void createCategory(String name) {
 
+    }
+
+    @Override
+    public Category getCategoryById(Long category) {
+        return categoryRepository.findById(category).orElseThrow(() -> new CategoryNotFoundException(category));
     }
 }

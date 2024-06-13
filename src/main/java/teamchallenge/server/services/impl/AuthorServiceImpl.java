@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.entities.Author;
-import teamchallenge.server.entities.Category;
-import teamchallenge.server.entities.User;
 import teamchallenge.server.repositories.AuthorRepository;
 import teamchallenge.server.services.AuthorService;
 
@@ -28,11 +26,11 @@ public class AuthorServiceImpl implements AuthorService {
         return result;
     }
 
-    private Author createAndGetAuthor(String name){
+    private Author createAndGetAuthor(String name) {
         Author author = new Author();
         author.setName(WordUtils.capitalizeFully(name.toLowerCase()));
         authorRepository.save(author);
         return author;
     }
-    
+
 }

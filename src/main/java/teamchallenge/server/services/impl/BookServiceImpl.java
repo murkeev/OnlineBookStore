@@ -11,16 +11,14 @@ import teamchallenge.server.dto.ListResponseBookDto;
 import teamchallenge.server.dto.ResponseBookDto;
 import teamchallenge.server.entities.Author;
 import teamchallenge.server.entities.Book;
-import teamchallenge.server.entities.Category;
 import teamchallenge.server.exception.BookNotFoundException;
 import teamchallenge.server.repositories.BookRepository;
 import teamchallenge.server.services.AuthorService;
 import teamchallenge.server.services.BookService;
 import teamchallenge.server.services.CategoryService;
 import teamchallenge.server.services.ImageService;
-import teamchallenge.server.utils.ImageUtils;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +41,9 @@ public class BookServiceImpl implements BookService {
         book.setPrice(createBookDto.getPrice());
         book.setTotalQuantity(createBookDto.getTotalQuantity());
         book.setExpected(createBookDto.isExpected());
+        book.setLanguage(createBookDto.getLanguage());
+        book.setDiscount(createBookDto.getDiscount());
+        book.setCreatedAt(LocalDateTime.now());
         return mapBookToResponseBookDto(bookRepository.save(book));
     }
 
@@ -63,7 +64,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public Page<ListResponseBookDto> getBooks(Pageable pageable) {
+    public Page<ListResponseBookDto> getBooks(Pageable pageable, Long category) {
+        if (category != null) {
+            return bookRepository.findAllByCategories(pageable, categoryService.getCategoryById(category))
+                    .map(this::mapBookToListResponseBookDto);
+        }
         return bookRepository.findAll(pageable)
                 .map(this::mapBookToListResponseBookDto);
     }
@@ -76,6 +81,7 @@ public class BookServiceImpl implements BookService {
                 .price(book.getPrice())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
+                .language(book.getLanguage())
                 .authors(book.getAuthors()
                         .stream()
                         .map(Author::getName)
@@ -88,10 +94,7 @@ public class BookServiceImpl implements BookService {
         return ResponseBookDto.builder()
                 .id(book.getId())
                 .title(book.getTitle())
-                .categories(book.getCategories()
-                        .stream()
-                        .map(Category::getName)
-                        .collect(Collectors.toList()))
+                .categories(book.getCategories())
                 .authors(book.getAuthors()
                         .stream()
                         .map(Author::getName)
@@ -99,6 +102,7 @@ public class BookServiceImpl implements BookService {
                 .description(book.getDescription())
                 .year(book.getYear())
                 .price(book.getPrice())
+                .language(book.getLanguage())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .image(imageService.getImageDto(book.getImages()))

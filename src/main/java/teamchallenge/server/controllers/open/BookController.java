@@ -1,7 +1,6 @@
 package teamchallenge.server.controllers.open;
 
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,13 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseBookDto> getBooks(@PathVariable Long id){
+    public ResponseEntity<ResponseBookDto> getBooks(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getBookById((id)));
     }
 
     @PostMapping("/_list")
-    public ResponseEntity<Page<ListResponseBookDto>> getBooks(Pageable pageable){
-        return ResponseEntity.ok(bookService.getBooks(pageable));
+    public ResponseEntity<Page<ListResponseBookDto>> getBooks(Pageable pageable, @RequestParam(required = false) Long category) {
+        return ResponseEntity.ok(bookService.getBooks(pageable, category));
     }
+
 }

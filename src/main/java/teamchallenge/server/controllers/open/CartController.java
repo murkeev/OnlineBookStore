@@ -25,6 +25,7 @@ public class CartController {
     public ResponseEntity<List<CartHeaderDto>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCartHeaders());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<CartHeaderDto> getCartById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getCartHeaderById(id));

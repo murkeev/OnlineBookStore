@@ -2,7 +2,6 @@ package teamchallenge.server.dto;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.entities.Author;
 
 import java.util.List;
 
@@ -18,5 +17,7 @@ public class CreateBookDto {
     private double price;
     private int totalQuantity;
     private boolean isExpected;
+    private String language;
+    private Integer discount;
 
 }

@@ -27,18 +27,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-        
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
                 username = jwtUtils.getEmail(jwt);
-            } catch (ExpiredJwtException e ) {
+            } catch (ExpiredJwtException e) {
                 System.out.println("JWT has expired");
             }
 
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, jwtUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).toList());
             SecurityContextHolder.getContext().setAuthentication(token);
 

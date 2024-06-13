@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.dto.CreateUserDto;
 import teamchallenge.server.dto.ResponseUserDto;
-import teamchallenge.server.entities.Role;
 import teamchallenge.server.entities.User;
 import teamchallenge.server.exception.UserNotFoundException;
 import teamchallenge.server.repositories.UserRepository;
@@ -25,19 +24,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService, UserService{
+public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
 
 
     private CartService cartService;
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     public void cartService(@Lazy CartService cartService) {
         this.cartService = cartService;
     }
 
-    private PasswordEncoder passwordEncoder;
     @Autowired
     public void passwordEncoder(@Lazy PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 
         //findByEmail(user.getEmail()).getId();
     }
+
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);

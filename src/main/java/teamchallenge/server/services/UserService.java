@@ -7,6 +7,7 @@ import teamchallenge.server.entities.User;
 public interface UserService {
 
     void createUser(CreateUserDto createUserDto);
+
     boolean existsByEmail(String email);
 
     User findByEmail(String email);

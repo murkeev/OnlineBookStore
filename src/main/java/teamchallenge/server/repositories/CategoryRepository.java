@@ -7,6 +7,6 @@ import teamchallenge.server.entities.Category;
 import java.util.Optional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByName(String categoryName);
 }

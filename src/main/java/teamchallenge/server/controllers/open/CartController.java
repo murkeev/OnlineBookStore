@@ -16,30 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("api/open/cart")
 public class CartController {
-
     private final JwtUtils jwtUtils;
     @Autowired
     private CartServiceImpl cartService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CartHeaderDto>> getAllCarts() {
-        return ResponseEntity.ok(cartService.getAllCartHeaders());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<CartHeaderDto> getCartById(@PathVariable Long id) {
         return ResponseEntity.ok(cartService.getCartHeaderById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<Long> createCart(@RequestBody CartHeader cart) {
-        return ResponseEntity.ok(cartService.saveCartHeader(cart));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCart(@PathVariable Long id) {
-        cartService.deleteCartHeader(id);
-        return ResponseEntity.ok("");
     }
 
     @PostMapping("/add-book")

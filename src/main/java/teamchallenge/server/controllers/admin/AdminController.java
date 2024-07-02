@@ -1,20 +1,27 @@
 package teamchallenge.server.controllers.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamchallenge.server.dto.CartHeaderDto;
 import teamchallenge.server.dto.CreateBookDto;
 import teamchallenge.server.dto.ResponseBookDto;
+import teamchallenge.server.entities.CartHeader;
 import teamchallenge.server.services.BookService;
+import teamchallenge.server.services.impl.CartServiceImpl;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/admin")
 public class AdminController {
-
     private final BookService bookService;
+    @Autowired
+    private CartServiceImpl cartService;
 
     @PostMapping("/book")
     public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto) {
@@ -24,6 +31,22 @@ public class AdminController {
     @PostMapping("/book/{id}/images")
     public ResponseEntity uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
         bookService.saveImages(id, images);
+        return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/cart/all")
+    public ResponseEntity<List<CartHeaderDto>> getAllCarts() {
+        return ResponseEntity.ok(cartService.getAllCartHeaders());
+    }
+
+    @PostMapping("/cart/create-cart")
+    public ResponseEntity<Long> createCart(@RequestBody CartHeader cart) {
+        return ResponseEntity.ok(cartService.saveCartHeader(cart));
+    }
+
+    @DeleteMapping("/cart/delete-cart/{id}")
+    public ResponseEntity<String> deleteCart(@PathVariable Long id) {
+        cartService.deleteCartHeader(id);
         return ResponseEntity.ok("");
     }
 }

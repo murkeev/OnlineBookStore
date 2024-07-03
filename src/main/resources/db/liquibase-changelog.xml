@@ -3,7 +3,119 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="1" author="Ivan">
+    <changeSet id="1" author="Dmytro">
+        <sql>
+            -- Создание таблиц только если они не существуют
+            CREATE TABLE IF NOT EXISTS author (
+                id BIGSERIAL NOT NULL,
+                name VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS book (
+                discount INTEGER,
+                is_expected BOOLEAN NOT NULL,
+                price FLOAT(53) NOT NULL,
+                total_quantity INTEGER,
+                year INTEGER NOT NULL,
+                created_at TIMESTAMP(6),
+                id BIGSERIAL NOT NULL,
+                images_id BIGINT UNIQUE,
+                description VARCHAR(2000),
+                language VARCHAR(255),
+                title VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS book_authors (
+                author_id BIGINT NOT NULL,
+                book_id BIGINT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS book_categories (
+                book_id BIGINT NOT NULL,
+                category_id BIGINT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS cart_header (
+                total_price FLOAT(53),
+                id BIGSERIAL NOT NULL,
+                user_id BIGINT UNIQUE,
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS cart_item (
+                price FLOAT(53),
+                book_id BIGINT,
+                cart_header_id BIGINT,
+                id BIGSERIAL NOT NULL,
+                quantity BIGINT,
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS category (
+                id BIGSERIAL NOT NULL,
+                name VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS image (
+                id BIGSERIAL NOT NULL,
+                content_type VARCHAR(255),
+                name VARCHAR(255),
+                bytes OID,
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS roles (
+                id SERIAL NOT NULL,
+                name VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+
+            CREATE TABLE IF NOT EXISTS user_roles (
+                role_id INTEGER NOT NULL,
+                user_id BIGINT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS users (
+                id BIGSERIAL NOT NULL,
+                email VARCHAR(255) UNIQUE,
+                first_name VARCHAR(255),
+                last_name VARCHAR(255),
+                password VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+
+            -- Удаление существующих ограничений, если они есть
+            ALTER TABLE book DROP CONSTRAINT IF EXISTS fk_book_image;
+            ALTER TABLE book_authors DROP CONSTRAINT IF EXISTS fk_book_authors_author;
+            ALTER TABLE book_authors DROP CONSTRAINT IF EXISTS fk_book_authors_book;
+            ALTER TABLE book_categories DROP CONSTRAINT IF EXISTS fk_book_categories_category;
+            ALTER TABLE book_categories DROP CONSTRAINT IF EXISTS fk_book_categories_book;
+            ALTER TABLE cart_header DROP CONSTRAINT IF EXISTS fk_cart_header_user;
+            ALTER TABLE cart_item DROP CONSTRAINT IF EXISTS fk_cart_item_book;
+            ALTER TABLE cart_item DROP CONSTRAINT IF EXISTS fk_cart_item_cart_header;
+            ALTER TABLE user_roles DROP CONSTRAINT IF EXISTS fk_user_roles_role;
+            ALTER TABLE user_roles DROP CONSTRAINT IF EXISTS fk_user_roles_user;
+
+            -- Добавление новых ограничений без проверки на их существование
+            ALTER TABLE book ADD CONSTRAINT fk_book_image FOREIGN KEY (images_id) REFERENCES image;
+            ALTER TABLE book_authors ADD CONSTRAINT fk_book_authors_author FOREIGN KEY (author_id) REFERENCES author;
+            ALTER TABLE book_authors ADD CONSTRAINT fk_book_authors_book FOREIGN KEY (book_id) REFERENCES book;
+            ALTER TABLE book_categories ADD CONSTRAINT fk_book_categories_category FOREIGN KEY (category_id) REFERENCES category;
+            ALTER TABLE book_categories ADD CONSTRAINT fk_book_categories_book FOREIGN KEY (book_id) REFERENCES book;
+            ALTER TABLE cart_header ADD CONSTRAINT fk_cart_header_user FOREIGN KEY (user_id) REFERENCES users;
+            ALTER TABLE cart_item ADD CONSTRAINT fk_cart_item_book FOREIGN KEY (book_id) REFERENCES book;
+            ALTER TABLE cart_item ADD CONSTRAINT fk_cart_item_cart_header FOREIGN KEY (cart_header_id) REFERENCES cart_header;
+            ALTER TABLE user_roles ADD CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles;
+            ALTER TABLE user_roles ADD CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users;
+
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="2" author="Ivan">
         <sql>
             INSERT INTO roles (name)
             VALUES ('ROLE_PERSONAL');

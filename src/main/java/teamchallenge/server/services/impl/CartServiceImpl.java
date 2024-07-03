@@ -77,6 +77,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public CartHeader createCart() {
+        CartHeader cartHeader = new CartHeader();
+        return cartHeaderRepository.save(cartHeader);
+        //userService.save(user);
+    }
+
+    @Override
     public CartHeaderDto getCartByUser(String email) {
         return cartHeaderMapper.toDto(userService.findByEmail(email).getCartHeader());
     }

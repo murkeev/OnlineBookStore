@@ -18,6 +18,8 @@ public interface CartService {
 
     CartHeader createCart(User user);
 
+    CartHeader createCart();
+
     CartHeaderDto getCartByUser(String email);
 
     CartHeaderDto addBook(Long bookId, Long quantity);

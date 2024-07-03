@@ -10,10 +10,12 @@ spring:
     password: 1234
 
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: update
-    defer-datasource-initialization: true
+      ddl-auto: none
+    defer-datasource-initialization: false
   liquibase:
+    enabled: true
     change-log: classpath:db/liquibase-changelog.xml
 
 logging:

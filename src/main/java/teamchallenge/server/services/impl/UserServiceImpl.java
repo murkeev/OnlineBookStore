@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import teamchallenge.server.dto.CartHeaderDto;
 import teamchallenge.server.dto.CreateUserDto;
 import teamchallenge.server.dto.ResponseUserDto;
 import teamchallenge.server.entities.User;
@@ -85,6 +86,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         //findByEmail(user.getEmail()).getId();
     }
+
+//    @Override
+//    @Transactional
+//    public void createUser(CreateUserDto createUserDto, CartHeaderDto cartHeaderDto) {
+//        User user = new User();
+//        user.setFirstName(createUserDto.getFirstName());
+//        user.setLastName(createUserDto.getLastName());
+//        user.setEmail(createUserDto.getEmail());
+//        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+//        user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
+//
+//        user.setCartHeader(cartService.createCart(user));
+//        userRepository.save(user);
+//
+//        //findByEmail(user.getEmail()).getId();
+//    }
 
     @Override
     public boolean existsByEmail(String email) {

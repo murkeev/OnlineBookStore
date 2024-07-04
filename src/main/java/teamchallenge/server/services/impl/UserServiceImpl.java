@@ -81,27 +81,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
 
-        user.setCartHeader(cartService.createCart(user));
+        if (createUserDto.cartHeaderId != null){
+            user.setCartHeader(cartService.addUserToCart(user, createUserDto.cartHeaderId));
+        }else{
+            user.setCartHeader(cartService.createCart(user));
+        }
+
         userRepository.save(user);
 
         //findByEmail(user.getEmail()).getId();
     }
-
-//    @Override
-//    @Transactional
-//    public void createUser(CreateUserDto createUserDto, CartHeaderDto cartHeaderDto) {
-//        User user = new User();
-//        user.setFirstName(createUserDto.getFirstName());
-//        user.setLastName(createUserDto.getLastName());
-//        user.setEmail(createUserDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-//        user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
-//
-//        user.setCartHeader(cartService.createCart(user));
-//        userRepository.save(user);
-//
-//        //findByEmail(user.getEmail()).getId();
-//    }
 
     @Override
     public boolean existsByEmail(String email) {

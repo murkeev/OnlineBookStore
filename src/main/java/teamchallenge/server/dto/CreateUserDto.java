@@ -23,4 +23,6 @@ public class CreateUserDto {
     @NotBlank
     @Size(min = 8)
     public String password;
+
+    public Long cartHeaderId;
 }

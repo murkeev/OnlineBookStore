@@ -25,14 +25,27 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartHeaderById(id));
     }
 
+    @PostMapping("/create-cart")
+    public ResponseEntity<Long> createCart() {
+        return ResponseEntity.ok(cartService.createCart());
+    }
+
     @PostMapping("/add-book")
     public ResponseEntity<CartHeaderDto> addBookToCart(@RequestBody ChangeBookQuantityInCartDto request) {
-        return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity()));
+        if (request.getCartHeaderId() != null) {
+            return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity(), request.getCartHeaderId()));
+        }else {
+            return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity()));
+        }
     }
 
     @DeleteMapping("/remove-book")
     public ResponseEntity<CartHeaderDto> removeBookFromCart(@RequestBody ChangeBookQuantityInCartDto request) {
-        return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity()));
+        if (request.getCartHeaderId() != null) {
+            return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity(), request.getCartHeaderId()));
+        }else {
+            return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity()));
+        }
     }
 
     @DeleteMapping("/clear-cart")

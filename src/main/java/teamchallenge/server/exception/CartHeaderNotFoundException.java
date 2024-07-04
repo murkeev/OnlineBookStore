@@ -3,7 +3,7 @@ package teamchallenge.server.exception;
 import teamchallenge.server.entities.User;
 
 public class CartHeaderNotFoundException extends RuntimeException {
-    public CartHeaderNotFoundException(User user) {
-        super("Cart for user " + user.toString() + " not found");
+    public CartHeaderNotFoundException(Long cartHeaderId) {
+        super("Cart with id " + cartHeaderId.toString() + " not found");
     }
 }

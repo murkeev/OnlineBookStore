@@ -5,13 +5,13 @@ jwt:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-cont7vsf7o1s73frot1g-a.frankfurt-postgres.render.com/teamchallenge
+    url: jdbc:postgresql://dpg-cq33sucs1f4s73f8409g-a.frankfurt-postgres.render.com/teamchallenge_k3zv
     username: teamchallenge_user
-    password: 7wQS07QVsKn04wo72XSGmKuNbOiDDhYj
+    password: zF6CNIAm08bu3ihy3kjRukkxMtDMJBuV
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     defer-datasource-initialization: false
   liquibase:
     change-log: classpath:db/liquibase-changelog.xml

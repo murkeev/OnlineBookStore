@@ -1,13 +1,13 @@
 jwt:
-  secret: as542d54fkja656s7h6ndfjas1241234kdnsadiojfkjasdk1123rjkj34
+  secret: System.getenv("JWT_SECRET")
   lifetime: 7d
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-cq33sucs1f4s73f8409g-a.frankfurt-postgres.render.com/teamchallenge_k3zv
-    username: teamchallenge_user
-    password: zF6CNIAm08bu3ihy3kjRukkxMtDMJBuV
+    url: System.getenv("DATABASE_URL")
+    username: System.getenv("DATABASE_USERNAME")
+    password: System.getenv("DATABASE_PASSWORD")
 
   jpa:
     hibernate:

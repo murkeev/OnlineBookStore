@@ -5,15 +5,17 @@ jwt:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/teamChallenge
+    url: jdbc:postgresql://localhost:32768/teamChallenge
     username: postgres
-    password: 123
+    password: 1234
 
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     defer-datasource-initialization: false
   liquibase:
+    enabled: true
     change-log: classpath:db/liquibase-changelog.xml
 
 logging:

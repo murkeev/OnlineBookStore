@@ -17,7 +17,9 @@ public class CartHeaderMapper {
     public CartHeaderDto toDto(CartHeader cartHeader) {
         CartHeaderDto dto = new CartHeaderDto();
         dto.setCartHeaderId(cartHeader.getId());
-        dto.setUserId(cartHeader.getUser().getId());
+        if (cartHeader.getUser() != null){
+            dto.setUserId(cartHeader.getUser().getId());
+        }
         dto.setTotalPrice(cartHeader.getTotalPrice());
         dto.setCartItems(cartHeader.getCartItems().stream()
                 .map(cartItemMapper::toDto)

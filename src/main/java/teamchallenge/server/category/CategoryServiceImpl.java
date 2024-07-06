@@ -1,12 +1,8 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.category;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.entities.Category;
-import teamchallenge.server.exception.CategoryNotFoundException;
-import teamchallenge.server.repositories.CategoryRepository;
-import teamchallenge.server.services.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public void createCategory(String name) {
-
+        // TODO document why this method is empty
     }
 
     @Override

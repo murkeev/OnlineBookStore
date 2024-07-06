@@ -1,12 +1,10 @@
-package teamchallenge.server.controllers.open;
+package teamchallenge.server.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import teamchallenge.server.entities.Category;
-import teamchallenge.server.services.CategoryService;
 
 import java.util.List;
 

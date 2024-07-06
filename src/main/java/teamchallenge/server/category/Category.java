@@ -1,4 +1,4 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.category;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

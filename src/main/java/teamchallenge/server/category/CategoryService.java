@@ -1,6 +1,4 @@
-package teamchallenge.server.services;
-
-import teamchallenge.server.entities.Category;
+package teamchallenge.server.category;
 
 import java.util.List;
 

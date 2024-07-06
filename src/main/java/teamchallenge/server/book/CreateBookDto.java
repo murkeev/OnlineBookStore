@@ -1,4 +1,4 @@
-package teamchallenge.server.dto;
+package teamchallenge.server.book;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class CreateBookDto {
-
     private String title;
     private List<String> categories;
     private List<String> authors;
@@ -19,5 +18,4 @@ public class CreateBookDto {
     private boolean isExpected;
     private String language;
     private Integer discount;
-
 }

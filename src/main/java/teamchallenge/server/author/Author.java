@@ -1,4 +1,4 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.author;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,6 @@ import lombok.Data;
 @Entity
 @Data
 public class Author {
-
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private long id;

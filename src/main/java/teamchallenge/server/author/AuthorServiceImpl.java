@@ -1,11 +1,8 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.author;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.entities.Author;
-import teamchallenge.server.repositories.AuthorRepository;
-import teamchallenge.server.services.AuthorService;
 
 import java.util.ArrayList;
 import java.util.List;

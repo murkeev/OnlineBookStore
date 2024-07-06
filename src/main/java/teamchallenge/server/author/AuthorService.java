@@ -1,6 +1,4 @@
-package teamchallenge.server.services;
-
-import teamchallenge.server.entities.Author;
+package teamchallenge.server.author;
 
 import java.util.List;
 

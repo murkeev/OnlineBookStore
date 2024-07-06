@@ -1,4 +1,4 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.image;
 
 import jakarta.persistence.*;
 import lombok.Data;

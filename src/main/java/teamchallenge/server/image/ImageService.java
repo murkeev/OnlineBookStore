@@ -1,8 +1,6 @@
-package teamchallenge.server.services;
+package teamchallenge.server.image;
 
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.dto.ResponseImageDto;
-import teamchallenge.server.entities.Image;
 
 public interface ImageService {
 

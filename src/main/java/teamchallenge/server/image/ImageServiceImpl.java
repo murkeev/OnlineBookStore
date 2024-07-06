@@ -1,16 +1,10 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.image;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.dto.ResponseImageDto;
-import teamchallenge.server.entities.Image;
-import teamchallenge.server.exception.FileUploadException;
-import teamchallenge.server.repositories.ImageRepository;
-import teamchallenge.server.services.ImageService;
-import teamchallenge.server.utils.ImageUtils;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package teamchallenge.server.utils;
+package teamchallenge.server.image;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;
@@ -6,6 +6,8 @@ import java.util.zip.Inflater;
 
 public class ImageUtils {
 
+    private ImageUtils() {
+    }
 
     public static byte[] compressImage(byte[] data) {
         Deflater deflater = new Deflater();

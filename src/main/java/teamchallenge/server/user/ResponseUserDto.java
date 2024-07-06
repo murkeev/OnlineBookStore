@@ -1,4 +1,4 @@
-package teamchallenge.server.dto;
+package teamchallenge.server.user;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package teamchallenge.server.controllers.open;
+package teamchallenge.server.auth;
 
 
 import jakarta.validation.Valid;
@@ -7,22 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import teamchallenge.server.dto.CreateUserDto;
-import teamchallenge.server.dto.JwtResponseDto;
-import teamchallenge.server.dto.LoginUserDto;
-import teamchallenge.server.services.UserService;
-import teamchallenge.server.utils.JwtUtils;
-
+import teamchallenge.server.jwt.JwtUtils;
+import teamchallenge.server.user.UserService;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/open/auth")
+@RequiredArgsConstructor
 @Validated
 public class AuthController {
     private final UserService userService;
@@ -37,7 +32,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginUserDto loginUserDto) {
 
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUserDto.getEmail(), loginUserDto.getPassword())
         );
         String jwt = jwtUtils.generateToken(userService.findByEmail(loginUserDto.getEmail()));

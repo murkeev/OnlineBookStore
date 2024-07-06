@@ -1,4 +1,4 @@
-package teamchallenge.server.dto;
+package teamchallenge.server.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class JwtResponseDto {
-
     private String token;
 }

@@ -1,12 +1,13 @@
-package teamchallenge.server.utils;
+package teamchallenge.server.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.entities.User;
+import teamchallenge.server.user.User;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Duration;
@@ -48,7 +49,7 @@ public class JwtUtils {
 
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(getSigningKey())
+                .verifyWith((SecretKey) getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

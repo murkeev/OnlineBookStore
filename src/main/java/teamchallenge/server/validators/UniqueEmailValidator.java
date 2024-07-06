@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import teamchallenge.server.annotation.UniqueEmail;
-import teamchallenge.server.services.UserService;
+import teamchallenge.server.user.UserService;
 
 
 @RequiredArgsConstructor

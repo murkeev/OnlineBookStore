@@ -1,27 +1,25 @@
-package teamchallenge.server.controllers.admin;
+package teamchallenge.server.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.dto.CreateBookDto;
-import teamchallenge.server.dto.ResponseBookDto;
-import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.services.BookService;
-import teamchallenge.server.services.impl.CartServiceImpl;
+import teamchallenge.server.book.BookService;
+import teamchallenge.server.book.CreateBookDto;
+import teamchallenge.server.book.ResponseBookDto;
+import teamchallenge.server.cart.CartHeader;
+import teamchallenge.server.cart.CartHeaderDto;
+import teamchallenge.server.cart.CartServiceImpl;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/admin")
+@RequiredArgsConstructor
 public class AdminController {
     private final BookService bookService;
-    @Autowired
-    private CartServiceImpl cartService;
+    private final CartServiceImpl cartService;
 
     @PostMapping("/book")
     public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto) {
@@ -29,7 +27,7 @@ public class AdminController {
     }
 
     @PostMapping("/book/{id}/images")
-    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
         bookService.saveImages(id, images);
         return ResponseEntity.ok("");
     }

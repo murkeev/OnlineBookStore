@@ -1,16 +1,16 @@
-package teamchallenge.server.utils;
+package teamchallenge.server.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import teamchallenge.server.entities.User;
-import teamchallenge.server.services.RoleService;
-import teamchallenge.server.services.UserService;
+import teamchallenge.server.role.RoleService;
+import teamchallenge.server.user.User;
+import teamchallenge.server.user.UserService;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class AdminGenerationUtil {
 
     private final UserService userService;

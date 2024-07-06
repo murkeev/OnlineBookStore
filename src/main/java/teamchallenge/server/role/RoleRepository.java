@@ -1,8 +1,7 @@
-package teamchallenge.server.repositories;
+package teamchallenge.server.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import teamchallenge.server.entities.Role;
 
 import java.util.Optional;
 

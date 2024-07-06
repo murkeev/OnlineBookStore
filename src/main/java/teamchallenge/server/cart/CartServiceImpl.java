@@ -1,55 +1,45 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.cart;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.entities.Book;
-import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.entities.CartItem;
-import teamchallenge.server.entities.User;
-import teamchallenge.server.exception.BookNotFoundException;
-import teamchallenge.server.exception.CartHeaderForUserNotFoundException;
-import teamchallenge.server.exception.CartHeaderNotFoundException;
-import teamchallenge.server.mappers.CartHeaderMapper;
-import teamchallenge.server.repositories.BookRepository;
-import teamchallenge.server.repositories.CartHeaderRepository;
-import teamchallenge.server.repositories.CartItemRepository;
-import teamchallenge.server.repositories.UserRepository;
-import teamchallenge.server.services.CartService;
+import teamchallenge.server.book.Book;
+import teamchallenge.server.book.BookNotFoundException;
+import teamchallenge.server.book.BookRepository;
+import teamchallenge.server.user.User;
+import teamchallenge.server.user.UserRepository;
+import teamchallenge.server.user.UserServiceImpl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
-    @Autowired
-    private CartHeaderRepository cartHeaderRepository;
-    @Autowired
-    private CartItemRepository cartItemRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private BookRepository bookRepository;
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private CartHeaderMapper cartHeaderMapper;
+
+    private final CartHeaderRepository cartHeaderRepository;
+
+    private final CartItemRepository cartItemRepository;
+
+    private final UserRepository userRepository;
+
+    private final BookRepository bookRepository;
+
+    private final UserServiceImpl userService;
+
+    private final CartHeaderMapper cartHeaderMapper;
 
     @Override
     public List<CartHeaderDto> getAllCartHeaders() {
 
         return cartHeaderRepository.findAll().stream()
                 .map(cartHeaderMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -60,8 +50,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartHeader getCartHeaderEntityById(Long id) {
-        CartHeader cartHeader = cartHeaderRepository.findById(id).orElseThrow(() -> new RuntimeException("Cart not found"));
-        return cartHeader;
+        return cartHeaderRepository.findById(id).orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
     @Override
@@ -91,7 +80,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartHeader addUserToCart(User user, Long cartHeaderId){
+    public CartHeader addUserToCart(User user, Long cartHeaderId) {
         CartHeader cartHeader = cartHeaderRepository.findById(cartHeaderId).orElseThrow(() -> new CartHeaderNotFoundException(cartHeaderId));
         cartHeader.setUser(user);
         return cartHeaderRepository.save(cartHeader);

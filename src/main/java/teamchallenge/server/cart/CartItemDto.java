@@ -1,4 +1,4 @@
-package teamchallenge.server.dto;
+package teamchallenge.server.cart;
 
 import lombok.Data;
 

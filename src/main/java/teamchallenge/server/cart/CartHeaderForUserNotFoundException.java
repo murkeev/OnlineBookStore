@@ -1,6 +1,6 @@
-package teamchallenge.server.exception;
+package teamchallenge.server.cart;
 
-import teamchallenge.server.entities.User;
+import teamchallenge.server.user.User;
 
 public class CartHeaderForUserNotFoundException extends RuntimeException {
     public CartHeaderForUserNotFoundException(User user) {

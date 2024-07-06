@@ -1,9 +1,10 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.cart;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import teamchallenge.server.book.Book;
 
 @Entity
 @Data

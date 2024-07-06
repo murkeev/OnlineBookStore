@@ -1,9 +1,10 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.cart;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import teamchallenge.server.user.User;
 
 import java.util.List;
 

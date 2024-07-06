@@ -1,24 +1,14 @@
-package teamchallenge.server.controllers.open;
+package teamchallenge.server.cart;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.dto.ChangeBookQuantityInCartDto;
-import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.services.impl.CartServiceImpl;
-import teamchallenge.server.utils.JwtUtils;
-
-import java.util.List;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("api/open/cart")
+@RequiredArgsConstructor
 public class CartController {
-    private final JwtUtils jwtUtils;
-    @Autowired
-    private CartServiceImpl cartService;
+    private final CartServiceImpl cartService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CartHeaderDto> getCartById(@PathVariable Long id) {
@@ -34,7 +24,7 @@ public class CartController {
     public ResponseEntity<CartHeaderDto> addBookToCart(@RequestBody ChangeBookQuantityInCartDto request) {
         if (request.getCartHeaderId() != null) {
             return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity(), request.getCartHeaderId()));
-        }else {
+        } else {
             return ResponseEntity.ok(cartService.addBook(request.getBookId(), request.getQuantity()));
         }
     }
@@ -43,7 +33,7 @@ public class CartController {
     public ResponseEntity<CartHeaderDto> removeBookFromCart(@RequestBody ChangeBookQuantityInCartDto request) {
         if (request.getCartHeaderId() != null) {
             return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity(), request.getCartHeaderId()));
-        }else {
+        } else {
             return ResponseEntity.ok(cartService.removeBook(request.getBookId(), request.getQuantity()));
         }
     }

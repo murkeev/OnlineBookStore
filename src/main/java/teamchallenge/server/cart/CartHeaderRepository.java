@@ -1,9 +1,8 @@
-package teamchallenge.server.repositories;
+package teamchallenge.server.cart;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.entities.User;
+import teamchallenge.server.user.User;
 
 import java.util.Optional;
 

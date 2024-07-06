@@ -1,8 +1,6 @@
-package teamchallenge.server.services;
+package teamchallenge.server.cart;
 
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.entities.CartHeader;
-import teamchallenge.server.entities.User;
+import teamchallenge.server.user.User;
 
 import java.util.List;
 

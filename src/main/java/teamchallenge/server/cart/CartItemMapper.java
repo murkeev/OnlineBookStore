@@ -1,9 +1,7 @@
-package teamchallenge.server.mappers;
+package teamchallenge.server.cart;
 
 
 import org.springframework.stereotype.Service;
-import teamchallenge.server.dto.CartItemDto;
-import teamchallenge.server.entities.CartItem;
 
 @Service
 public class CartItemMapper {

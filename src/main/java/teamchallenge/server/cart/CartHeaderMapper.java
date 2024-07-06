@@ -1,23 +1,19 @@
-package teamchallenge.server.mappers;
+package teamchallenge.server.cart;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.entities.CartHeader;
 
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CartHeaderMapper {
-    @Autowired
-    private CartItemMapper cartItemMapper;
+    private final CartItemMapper cartItemMapper;
 
     public CartHeaderDto toDto(CartHeader cartHeader) {
         CartHeaderDto dto = new CartHeaderDto();
         dto.setCartHeaderId(cartHeader.getId());
-        if (cartHeader.getUser() != null){
+        if (cartHeader.getUser() != null) {
             dto.setUserId(cartHeader.getUser().getId());
         }
         dto.setTotalPrice(cartHeader.getTotalPrice());

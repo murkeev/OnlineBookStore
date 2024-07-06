@@ -1,4 +1,4 @@
-package teamchallenge.server.exception;
+package teamchallenge.server.book;
 
 public class BookNotFoundException extends RuntimeException {
     public BookNotFoundException(long id) {

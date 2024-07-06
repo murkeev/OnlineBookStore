@@ -1,11 +1,8 @@
-package teamchallenge.server.services;
+package teamchallenge.server.book;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.dto.CreateBookDto;
-import teamchallenge.server.dto.ListResponseBookDto;
-import teamchallenge.server.dto.ResponseBookDto;
 
 public interface BookService {
     ResponseBookDto createBook(CreateBookDto createBookDto);

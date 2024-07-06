@@ -1,13 +1,10 @@
-package teamchallenge.server.controllers.open;
+package teamchallenge.server.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import teamchallenge.server.dto.ListResponseBookDto;
-import teamchallenge.server.dto.ResponseBookDto;
-import teamchallenge.server.services.BookService;
 
 @RestController
 @RequestMapping("api/open/book")

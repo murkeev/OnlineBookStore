@@ -1,4 +1,4 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -6,20 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import teamchallenge.server.dto.CreateBookDto;
-import teamchallenge.server.dto.ListResponseBookDto;
-import teamchallenge.server.dto.ResponseBookDto;
-import teamchallenge.server.entities.Author;
-import teamchallenge.server.entities.Book;
-import teamchallenge.server.exception.BookNotFoundException;
-import teamchallenge.server.repositories.BookRepository;
-import teamchallenge.server.services.AuthorService;
-import teamchallenge.server.services.BookService;
-import teamchallenge.server.services.CategoryService;
-import teamchallenge.server.services.ImageService;
+import teamchallenge.server.author.Author;
+import teamchallenge.server.author.AuthorService;
+import teamchallenge.server.category.CategoryService;
+import teamchallenge.server.image.ImageService;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,14 +70,13 @@ public class BookServiceImpl implements BookService {
                 .id(book.getId())
                 .title(book.getTitle())
                 .year(book.getYear())
-                .price(book.getPrice())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .language(book.getLanguage())
                 .authors(book.getAuthors()
                         .stream()
                         .map(Author::getName)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .image(imageService.getImageDto(book.getImages()))
                 .build();
     }
@@ -98,7 +89,7 @@ public class BookServiceImpl implements BookService {
                 .authors(book.getAuthors()
                         .stream()
                         .map(Author::getName)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .description(book.getDescription())
                 .year(book.getYear())
                 .price(book.getPrice())

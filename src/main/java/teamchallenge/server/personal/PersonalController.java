@@ -1,4 +1,4 @@
-package teamchallenge.server.controllers.personal;
+package teamchallenge.server.personal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +14,4 @@ public class PersonalController {
     public String test() {
         return "Hello User!";
     }
-
-
 }

@@ -1,8 +1,6 @@
-package teamchallenge.server.services;
+package teamchallenge.server.user;
 
-import teamchallenge.server.dto.CreateUserDto;
-import teamchallenge.server.dto.ResponseUserDto;
-import teamchallenge.server.entities.User;
+import teamchallenge.server.auth.CreateUserDto;
 
 public interface UserService {
 

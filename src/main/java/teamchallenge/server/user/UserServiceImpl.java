@@ -1,4 +1,4 @@
-package teamchallenge.server.services.impl;
+package teamchallenge.server.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,15 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import teamchallenge.server.dto.CartHeaderDto;
-import teamchallenge.server.dto.CreateUserDto;
-import teamchallenge.server.dto.ResponseUserDto;
-import teamchallenge.server.entities.User;
-import teamchallenge.server.exception.UserNotFoundException;
-import teamchallenge.server.repositories.UserRepository;
-import teamchallenge.server.services.CartService;
-import teamchallenge.server.services.RoleService;
-import teamchallenge.server.services.UserService;
+import teamchallenge.server.auth.CreateUserDto;
+import teamchallenge.server.cart.CartService;
+import teamchallenge.server.role.RoleService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,9 +75,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setRoles(List.of(roleService.findByName("ROLE_PERSONAL")));
 
-        if (createUserDto.cartHeaderId != null){
-            user.setCartHeader(cartService.addUserToCart(user, createUserDto.cartHeaderId));
-        }else{
+        if (createUserDto.getCartHeaderId() != null) {
+            user.setCartHeader(cartService.addUserToCart(user, createUserDto.getCartHeaderId()));
+        } else {
             user.setCartHeader(cartService.createCart(user));
         }
 

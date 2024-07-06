@@ -1,9 +1,11 @@
-package teamchallenge.server.entities;
+package teamchallenge.server.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import teamchallenge.server.cart.CartHeader;
+import teamchallenge.server.role.Role;
 
 import java.util.List;
 

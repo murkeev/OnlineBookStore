@@ -1,4 +1,4 @@
-package teamchallenge.server.exception;
+package teamchallenge.server.user;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(long id) {

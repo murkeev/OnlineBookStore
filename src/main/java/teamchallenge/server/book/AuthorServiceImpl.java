@@ -1,4 +1,4 @@
-package teamchallenge.server.author;
+package teamchallenge.server.book;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;

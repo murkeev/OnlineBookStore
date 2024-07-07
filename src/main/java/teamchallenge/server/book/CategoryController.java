@@ -1,4 +1,4 @@
-package teamchallenge.server.category;
+package teamchallenge.server.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

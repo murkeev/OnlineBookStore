@@ -2,7 +2,6 @@ package teamchallenge.server.book;
 
 import lombok.Builder;
 import lombok.Data;
-import teamchallenge.server.category.Category;
 import teamchallenge.server.image.ResponseImageDto;
 
 import java.util.List;

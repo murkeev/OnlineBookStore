@@ -1,4 +1,4 @@
-package teamchallenge.server.category;
+package teamchallenge.server.book;
 
 import java.util.List;
 

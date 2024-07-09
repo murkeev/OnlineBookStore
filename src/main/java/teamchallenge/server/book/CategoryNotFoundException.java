@@ -1,4 +1,4 @@
-package teamchallenge.server.category;
+package teamchallenge.server.book;
 
 public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(long id) {

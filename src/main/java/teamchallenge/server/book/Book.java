@@ -3,8 +3,6 @@ package teamchallenge.server.book;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import teamchallenge.server.author.Author;
-import teamchallenge.server.category.Category;
 import teamchallenge.server.image.Image;
 
 import java.time.LocalDateTime;

@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface BookService {
     ResponseBookDto createBook(CreateBookDto createBookDto);
 
@@ -12,4 +14,6 @@ public interface BookService {
     ResponseBookDto getBookById(Long id);
 
     Page<ListResponseBookDto> getBooks(Pageable pageable, Long category);
+
+    List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 }

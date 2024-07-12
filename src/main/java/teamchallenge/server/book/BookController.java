@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/open/book")
 @RequiredArgsConstructor
@@ -23,4 +25,8 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooks(pageable, category));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {
+        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
+    }
 }

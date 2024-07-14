@@ -3,12 +3,14 @@ package teamchallenge.server.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamchallenge.server.image.ImageService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +62,21 @@ public class BookServiceImpl implements BookService {
         }
         return bookRepository.findAll(pageable)
                 .map(this::mapBookToListResponseBookDto);
+    }
+
+    @Override
+    public List<ResponseBookDto> searchBooks(BookSearchCriteria criteria) {
+        Specification<Book> spec = Specification.where(BookSpecification.searchByAuthor(criteria.getAuthor())
+                .and(BookSpecification.searchByTitle(criteria.getTitle()))
+                .and(BookSpecification.searchByLanguage(criteria.getLanguage())
+                        .and(BookSpecification.searchByYear(criteria.getYear()))
+                        .and(BookSpecification.searchByPrice(criteria.getPrice())
+                                .and(BookSpecification.searchByCategory(criteria.getCategory())
+                                )))
+        );
+        return bookRepository.findAll(spec).stream()
+                .map(this::mapBookToResponseBookDto)
+                .toList();
     }
 
     private ListResponseBookDto mapBookToListResponseBookDto(Book book) {

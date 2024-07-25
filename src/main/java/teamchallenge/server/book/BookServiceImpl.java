@@ -84,6 +84,7 @@ public class BookServiceImpl implements BookService {
                 .id(book.getId())
                 .title(book.getTitle())
                 .year(book.getYear())
+                .price(book.getPrice())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .language(book.getLanguage())

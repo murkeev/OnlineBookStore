@@ -3,9 +3,9 @@ package teamchallenge.server.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import teamchallenge.server.role.RoleService;
-import teamchallenge.server.user.User;
-import teamchallenge.server.user.UserService;
+import teamchallenge.server.role.service.RoleService;
+import teamchallenge.server.user.entity.User;
+import teamchallenge.server.user.service.UserService;
 
 import java.util.List;
 

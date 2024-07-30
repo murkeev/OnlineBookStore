@@ -47,4 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryById(Long category) {
         return categoryRepository.findById(category).orElseThrow(() -> new CategoryNotFoundException(category));
     }
+
+    @Override
+    public Category getCategoryByName(String category) {
+        category = category.replace('+',' ');
+        String capitalized = category.substring(0, 1).toUpperCase() + category.substring(1);
+        return categoryRepository.findByName(capitalized).orElseThrow(() -> new CategoryNotFoundException(capitalized));
+    }
 }

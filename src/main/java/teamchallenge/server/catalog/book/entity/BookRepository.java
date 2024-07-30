@@ -9,5 +9,5 @@ import teamchallenge.server.catalog.category.entity.Category;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
-    Page<Book> findAllByCategories(Pageable pageable, Category category);
+    Page<Book> findAllByCategories(Category category, Pageable pageable);
 }

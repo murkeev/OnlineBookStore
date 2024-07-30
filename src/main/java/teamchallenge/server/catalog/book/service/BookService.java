@@ -19,5 +19,7 @@ public interface BookService {
 
     Page<ListResponseBookDto> getBooks(Pageable pageable, Long category);
 
+    Page<ListResponseBookDto> getBooks(Pageable pageable, String category);
+
     List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 }

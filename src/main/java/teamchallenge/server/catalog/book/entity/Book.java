@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.category.entity.Category;
 import teamchallenge.server.catalog.image.entity.Image;
+import teamchallenge.server.catalog.language.entity.Language;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +41,13 @@ public class Book {
 
     private int year;
 
-    private String language;
+    @ManyToMany
+    @JoinTable(
+            name = "book_languages",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages;
 
     @OneToOne
     private Image images;

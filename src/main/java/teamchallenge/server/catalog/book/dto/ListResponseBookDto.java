@@ -14,7 +14,7 @@ public class ListResponseBookDto {
     private int year;
     private double price;
     private int totalQuantity;
-    private String language;
+    private List<String> languages;
     private boolean isExpected;
     private List<String> authors;
     private ResponseImageDto image;

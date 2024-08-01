@@ -12,7 +12,6 @@ import teamchallenge.server.catalog.book.service.BookService;
 import teamchallenge.server.catalog.book.dto.ListResponseBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,33 +28,33 @@ public class BookController {
 
     @GetMapping("/list")
     public ResponseEntity<Page<ListResponseBookDto>> getBooks(@RequestParam(required = false) String category,
-                                                              @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size,
+                                                              @RequestParam(required = false) String price,
+                                                              @RequestParam(required = false) String year,
+                                                              @RequestParam(required = false) String language,
+                                                              @RequestParam(required = false) String author,
+                                                              @RequestParam(required = false) String expected,
+                                                              @RequestParam(defaultValue = "1") int page,
+                                                              @RequestParam(defaultValue = "9") int size,
                                                               @RequestParam(defaultValue = "title,asc") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(parseSortParams(sort)));
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by(parseSortParams(sort)));
         return ResponseEntity.ok(bookService.getBooks(pageable, category));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {
-        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
-    }
-
-
-//    private Sort.Order[] parseSortParams(String[] sort) {
-//        return Arrays.stream(sort)
-//                .map(param -> {
-//                    String[] parts = param.split(",");
-//                    if (parts.length == 2) {
-//                        return new Sort.Order(Sort.Direction.fromString(parts[1].toUpperCase()), parts[0]);
-//                    } else if (parts.length == 1) {
-//                        return new Sort.Order(Sort.Direction.ASC, parts[0]);
-//                    } else {
-//                        throw new IllegalArgumentException("Invalid sort parameter: " + param);
-//                    }
-//                })
-//                .toArray(Sort.Order[]::new);
+//    @GetMapping("/search")
+//    public ResponseEntity<List<ResponseBookDto>> searchBook(@RequestParam(required = false) String category,
+//                                                            @RequestParam(required = false) String price,
+//                                                            @RequestParam(required = false) String year,
+//                                                            @RequestParam(required = false) String language,
+//                                                            @RequestParam(required = false) String author,
+//                                                            @RequestParam(required = false) String expected) {
+//        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
 //    }
+
+//    @GetMapping("/search")
+//    public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {
+//        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
+//    }
+
 
     private Sort.Order[] parseSortParams(String sort) {
         // Разделяем строку на части, используя "," в качестве разделителя

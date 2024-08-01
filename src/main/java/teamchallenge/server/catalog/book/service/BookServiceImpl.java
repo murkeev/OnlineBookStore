@@ -19,6 +19,8 @@ import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 import teamchallenge.server.catalog.book.entity.Book;
 import teamchallenge.server.catalog.category.service.CategoryService;
 import teamchallenge.server.catalog.image.service.ImageService;
+import teamchallenge.server.catalog.language.entity.Language;
+import teamchallenge.server.catalog.language.service.LanguageService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +32,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final CategoryService categoryService;
     private final AuthorService authorService;
+    private final LanguageService languageService;
     private final ImageService imageService;
 
     @Override
@@ -43,7 +46,7 @@ public class BookServiceImpl implements BookService {
         book.setPrice(createBookDto.getPrice());
         book.setTotalQuantity(createBookDto.getTotalQuantity());
         book.setExpected(createBookDto.isExpected());
-        book.setLanguage(createBookDto.getLanguage());
+        book.setLanguages(languageService.getLanguages(createBookDto.getLanguages()));
         book.setDiscount(createBookDto.getDiscount());
         book.setCreatedAt(LocalDateTime.now());
         return mapBookToResponseBookDto(bookRepository.save(book));
@@ -109,7 +112,10 @@ public class BookServiceImpl implements BookService {
                 .price(book.getPrice())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
-                .language(book.getLanguage())
+                .languages(book.getLanguages()
+                        .stream()
+                        .map(Language::getName)
+                        .toList())
                 .authors(book.getAuthors()
                         .stream()
                         .map(Author::getName)
@@ -130,7 +136,10 @@ public class BookServiceImpl implements BookService {
                 .description(book.getDescription())
                 .year(book.getYear())
                 .price(book.getPrice())
-                .language(book.getLanguage())
+                .languages(book.getLanguages()
+                        .stream()
+                        .map(Language::getName)
+                        .toList())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .image(imageService.getImageDto(book.getImages()))

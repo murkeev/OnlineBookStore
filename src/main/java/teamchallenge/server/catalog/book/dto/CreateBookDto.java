@@ -16,6 +16,6 @@ public class CreateBookDto {
     private double price;
     private int totalQuantity;
     private boolean isExpected;
-    private String language;
+    private List<String> languages;
     private Integer discount;
 }

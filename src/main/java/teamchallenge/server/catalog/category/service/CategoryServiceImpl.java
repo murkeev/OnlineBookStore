@@ -50,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryByName(String category) {
-        category = category.replace('+',' ');
+        category = category.toLowerCase().replace('+',' ');
         String capitalized = category.substring(0, 1).toUpperCase() + category.substring(1);
         return categoryRepository.findByName(capitalized).orElseThrow(() -> new CategoryNotFoundException(capitalized));
     }

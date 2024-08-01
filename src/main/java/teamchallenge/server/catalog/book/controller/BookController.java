@@ -37,7 +37,8 @@ public class BookController {
                                                               @RequestParam(defaultValue = "9") int size,
                                                               @RequestParam(defaultValue = "title,asc") String sort) {
         Pageable pageable = PageRequest.of(page-1, size, Sort.by(parseSortParams(sort)));
-        return ResponseEntity.ok(bookService.getBooks(pageable, category));
+//        return ResponseEntity.ok(bookService.getBooks(pageable, category));
+        return ResponseEntity.ok(bookService.getBooks(pageable, category, price, year, language, author, expected));
     }
 
 //    @GetMapping("/search")
@@ -50,10 +51,10 @@ public class BookController {
 //        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
 //    }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {
-//        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {
+        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
+    }
 
 
     private Sort.Order[] parseSortParams(String sort) {

@@ -23,6 +23,7 @@ import teamchallenge.server.catalog.language.entity.Language;
 import teamchallenge.server.catalog.language.service.LanguageService;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -67,25 +68,66 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    @Override
-    @Transactional
-    public Page<ListResponseBookDto> getBooks(Pageable pageable, Long category) {
-        if (category != null) {
-            return bookRepository.findAllByCategories(categoryService.getCategoryById(category), pageable)
-                    .map(this::mapBookToListResponseBookDto);
-        }
-        return bookRepository.findAll(pageable)
-                .map(this::mapBookToListResponseBookDto);
-    }
+//    @Override
+//    @Transactional
+//    public Page<ListResponseBookDto> getBooks(Pageable pageable, Long category) {
+//        if (category != null) {
+//            return bookRepository.findAllByCategories(categoryService.getCategoryById(category), pageable)
+//                    .map(this::mapBookToListResponseBookDto);
+//        }
+//        return bookRepository.findAll(pageable)
+//                .map(this::mapBookToListResponseBookDto);
+//    }
+
+//    @Override
+//    @Transactional
+//    public Page<ListResponseBookDto> getBooks(Pageable pageable, String category) {
+//        if (category != null) {
+//            return bookRepository.findAllByCategories(categoryService.getCategoryByName(category), pageable)
+//                    .map(this::mapBookToListResponseBookDto);
+//        }
+//        return bookRepository.findAll(pageable)
+//                .map(this::mapBookToListResponseBookDto);
+//    }
 
     @Override
-    @Transactional
-    public Page<ListResponseBookDto> getBooks(Pageable pageable, String category) {
-        if (category != null) {
-            return bookRepository.findAllByCategories(categoryService.getCategoryByName(category), pageable)
-                    .map(this::mapBookToListResponseBookDto);
+//    @Transactional
+    public Page<ListResponseBookDto> getBooks(
+            Pageable pageable,
+            String stringCategory,
+            String stringPrice,
+            String stringYear,
+            String stringLanguage,
+            String stringAuthor,
+            String stringExpected) {
+
+        Specification<Book> spec = Specification.where(null);
+
+        if (stringCategory != null && !stringCategory.isEmpty()) {
+            List<String> category = Arrays.asList(stringCategory.split(","));
+            spec = spec.and(BookSpecification.hasCategoryIn(category));
         }
-        return bookRepository.findAll(pageable)
+        if (stringAuthor != null && !stringAuthor.isEmpty()) {
+            List<String> author = Arrays.asList(stringAuthor.split(","));
+            spec = spec.and(BookSpecification.hasAuthorIn(author));
+        }
+        if (stringLanguage != null && !stringLanguage.isEmpty()) {
+            List<String> language = Arrays.asList(stringLanguage.split(","));
+            spec = spec.and(BookSpecification.hasLanguageIn(language));
+        }
+        if (stringPrice != null && !stringPrice.isEmpty()) {
+            String[] price = stringPrice.split(",");
+            spec = spec.and(BookSpecification.hasPriceBetween(Double.valueOf(price[0]), Double.valueOf(price[1])));
+        }
+        if (stringYear != null && !stringYear.isEmpty()) {
+            String[] year = stringYear.split(",");
+            spec = spec.and(BookSpecification.hasYearBetween(Long.valueOf(year[0]), Long.valueOf(year[1])));
+        }
+        if (stringExpected != null && !stringExpected.isEmpty()) {
+            Boolean expected = Boolean.valueOf(stringExpected);
+            spec = spec.and(BookSpecification.isExpected(expected));
+        }
+        return bookRepository.findAll(spec, pageable)
                 .map(this::mapBookToListResponseBookDto);
     }
 

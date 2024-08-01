@@ -26,7 +26,8 @@ public interface BookService {
             String stringYear,
             String stringLanguage,
             String stringAuthor,
-            String stringExpected);
+            String stringExpected,
+            String stringTitle);
 
     List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 }

@@ -25,6 +25,7 @@ import teamchallenge.server.catalog.language.service.LanguageService;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,7 +100,8 @@ public class BookServiceImpl implements BookService {
             String stringYear,
             String stringLanguage,
             String stringAuthor,
-            String stringExpected) {
+            String stringExpected,
+            String stringTitle) {
 
         Specification<Book> spec = Specification.where(null);
 
@@ -120,13 +122,20 @@ public class BookServiceImpl implements BookService {
             spec = spec.and(BookSpecification.hasPriceBetween(Double.valueOf(price[0]), Double.valueOf(price[1])));
         }
         if (stringYear != null && !stringYear.isEmpty()) {
-            String[] year = stringYear.split(",");
-            spec = spec.and(BookSpecification.hasYearBetween(Long.valueOf(year[0]), Long.valueOf(year[1])));
+            List<Long> year = Arrays.stream(stringYear.split(","))
+                    .map(Long::valueOf)
+                    .toList();
+            spec = spec.and(BookSpecification.hasYear(year));
+            //spec = spec.and(BookSpecification.hasYearBetween(Long.valueOf(year[0]), Long.valueOf(year[1])));
         }
         if (stringExpected != null && !stringExpected.isEmpty()) {
             Boolean expected = Boolean.valueOf(stringExpected);
             spec = spec.and(BookSpecification.isExpected(expected));
         }
+        if (stringTitle != null && !stringTitle.isEmpty()) {
+            spec = spec.and(BookSpecification.hasTitleContaining(stringTitle));
+        }
+
         return bookRepository.findAll(spec, pageable)
                 .map(this::mapBookToListResponseBookDto);
     }

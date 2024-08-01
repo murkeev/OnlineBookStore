@@ -33,23 +33,14 @@ public class BookController {
                                                               @RequestParam(required = false) String language,
                                                               @RequestParam(required = false) String author,
                                                               @RequestParam(required = false) String expected,
+                                                              @RequestParam(required = false) String title,
                                                               @RequestParam(defaultValue = "1") int page,
                                                               @RequestParam(defaultValue = "9") int size,
                                                               @RequestParam(defaultValue = "title,asc") String sort) {
         Pageable pageable = PageRequest.of(page-1, size, Sort.by(parseSortParams(sort)));
-//        return ResponseEntity.ok(bookService.getBooks(pageable, category));
-        return ResponseEntity.ok(bookService.getBooks(pageable, category, price, year, language, author, expected));
+        return ResponseEntity.ok(bookService.getBooks(pageable, category, price, year, language, author, expected, title));
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<ResponseBookDto>> searchBook(@RequestParam(required = false) String category,
-//                                                            @RequestParam(required = false) String price,
-//                                                            @RequestParam(required = false) String year,
-//                                                            @RequestParam(required = false) String language,
-//                                                            @RequestParam(required = false) String author,
-//                                                            @RequestParam(required = false) String expected) {
-//        return ResponseEntity.ok(bookService.searchBooks(bookSearchCriteria));
-//    }
 
     @GetMapping("/search")
     public ResponseEntity<List<ResponseBookDto>> searchBook(@ModelAttribute BookSearchCriteria bookSearchCriteria) {

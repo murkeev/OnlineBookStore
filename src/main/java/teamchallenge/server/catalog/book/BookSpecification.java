@@ -2,12 +2,14 @@ package teamchallenge.server.catalog.book;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.book.entity.Book;
 import teamchallenge.server.catalog.category.entity.Category;
 import teamchallenge.server.catalog.language.entity.Language;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,12 +164,47 @@ public class BookSpecification {
         };
     }
 
+    public static Specification<Book> hasYear(List<Long> years) {
+        return (root, query, criteriaBuilder) -> {
+            if (years == null || years.isEmpty()) {
+                return criteriaBuilder.conjunction();
+            }
+
+            CriteriaBuilder.In<Long> inClause = criteriaBuilder.in(root.get("year"));
+            for (Long year : years) {
+                inClause.value(year);
+            }
+            return inClause;
+        };
+    }
+
     public static Specification<Book> isExpected(Boolean expected) {
         return (root, query, criteriaBuilder) -> {
             if (expected == null) {
                 return criteriaBuilder.conjunction();
             }
             return criteriaBuilder.equal(root.get("isExpected"), expected);
+        };
+    }
+
+    public static Specification<Book> hasTitleContaining(String title) {
+        return (root, query, criteriaBuilder) -> {
+            if (title == null || title.isEmpty()) {
+                return criteriaBuilder.conjunction();
+            }
+
+            // Приведение строки к нижнему регистру и замена символа '+' на пробел
+            String[] keywords = title.replace("+", " ").toLowerCase().split("\\s+");
+
+            // Создаем условия "like" для каждого ключевого слова и объединяем их с помощью "or"
+            Predicate[] predicates = Arrays.stream(keywords)
+                    .map(keyword -> criteriaBuilder.like(
+                            criteriaBuilder.lower(root.get("title")),
+                            "%" + keyword + "%"
+                    ))
+                    .toArray(Predicate[]::new);
+
+            return criteriaBuilder.and(predicates);
         };
     }
 

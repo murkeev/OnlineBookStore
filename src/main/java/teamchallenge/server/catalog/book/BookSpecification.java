@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.book.entity.Book;
 import teamchallenge.server.catalog.category.entity.Category;
+import teamchallenge.server.catalog.language.entity.Language;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,7 +80,6 @@ public class BookSpecification {
             if (categories == null || categories.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            //return root.get("categories").in(categories);
 
             // Приведение всех категорий к нижнему регистру
             List<String> lowerCaseCategories = categories.stream()
@@ -103,7 +103,21 @@ public class BookSpecification {
             if (authors == null || authors.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            return root.get("authors").in(authors);
+
+            // Приведение всех авторов к нижнему регистру и замена символов '+' на пробел
+            List<String> processedAuthors = authors.stream()
+                    .map(author -> author.replace("+", " ").toLowerCase())
+                    .collect(Collectors.toList());
+
+            Join<Book, Author> authorJoin = root.join("authors");
+
+            // Создаем критерий "in" для проверки наличия значения в списке
+            CriteriaBuilder.In<String> inClause = criteriaBuilder.in(criteriaBuilder.lower(authorJoin.get("name")));
+            for (String author : processedAuthors) {
+                inClause.value(author);
+            }
+
+            return inClause;
         };
     }
 
@@ -112,7 +126,21 @@ public class BookSpecification {
             if (languages == null || languages.isEmpty()) {
                 return criteriaBuilder.conjunction();
             }
-            return root.get("languages").in(languages);
+
+            // Приведение всех языков к нижнему регистру и замена символов '+' на пробел
+            List<String> processedLanguages = languages.stream()
+                    .map(language -> language.replace("+", " ").toLowerCase())
+                    .collect(Collectors.toList());
+
+            Join<Book, Language> languageJoin = root.join("languages");
+
+            // Создаем критерий "in" для проверки наличия значения в списке
+            CriteriaBuilder.In<String> inClause = criteriaBuilder.in(criteriaBuilder.lower(languageJoin.get("name")));
+            for (String language : processedLanguages) {
+                inClause.value(language);
+            }
+
+            return inClause;
         };
     }
 
@@ -139,7 +167,7 @@ public class BookSpecification {
             if (expected == null) {
                 return criteriaBuilder.conjunction();
             }
-            return root.get("isExpected").in(expected);
+            return criteriaBuilder.equal(root.get("isExpected"), expected);
         };
     }
 

@@ -88,6 +88,8 @@ public class BookSpecification {
                     .map(cat -> cat.replace("+", " ").toLowerCase())
                     .collect(Collectors.toList());
 
+            query.distinct(true);
+
             Join<Book, Category> categoryJoin = root.join("categories");
 
             // Создаем критерий "in" для проверки наличия значения в списке
@@ -111,6 +113,8 @@ public class BookSpecification {
                     .map(author -> author.replace("+", " ").toLowerCase())
                     .collect(Collectors.toList());
 
+            query.distinct(true);
+
             Join<Book, Author> authorJoin = root.join("authors");
 
             // Создаем критерий "in" для проверки наличия значения в списке
@@ -133,6 +137,8 @@ public class BookSpecification {
             List<String> processedLanguages = languages.stream()
                     .map(language -> language.replace("+", " ").toLowerCase())
                     .collect(Collectors.toList());
+
+            query.distinct(true);
 
             Join<Book, Language> languageJoin = root.join("languages");
 

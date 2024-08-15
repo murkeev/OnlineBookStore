@@ -8,7 +8,6 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,6 +15,13 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/liquibase-changelog.xml
+
+aws:
+  s3:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    bucket: ${AWS_BUCKET_NAME}
 
 logging:
   level:

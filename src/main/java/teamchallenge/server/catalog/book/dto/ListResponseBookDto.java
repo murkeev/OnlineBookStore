@@ -2,7 +2,6 @@ package teamchallenge.server.catalog.book.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import teamchallenge.server.catalog.image.dto.ResponseImageDto;
 
 import java.util.List;
 
@@ -17,5 +16,5 @@ public class ListResponseBookDto {
     private List<String> languages;
     private boolean isExpected;
     private List<String> authors;
-    private ResponseImageDto image;
+    private String imageUrl;
 }

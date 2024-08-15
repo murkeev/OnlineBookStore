@@ -13,7 +13,7 @@ import java.util.List;
 public interface BookService {
     ResponseBookDto createBook(CreateBookDto createBookDto);
 
-    void saveImages(Long id, MultipartFile images);
+//    void saveImages(Long id, MultipartFile images);
 
     ResponseBookDto getBookById(Long id);
 

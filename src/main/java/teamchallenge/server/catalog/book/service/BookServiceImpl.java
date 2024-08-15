@@ -1,6 +1,8 @@
 package teamchallenge.server.catalog.book.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,7 +20,6 @@ import teamchallenge.server.catalog.book.dto.ListResponseBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 import teamchallenge.server.catalog.book.entity.Book;
 import teamchallenge.server.catalog.category.service.CategoryService;
-import teamchallenge.server.catalog.image.service.ImageService;
 import teamchallenge.server.catalog.language.entity.Language;
 import teamchallenge.server.catalog.language.service.LanguageService;
 
@@ -31,11 +32,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
+    @Value("${aws.s3.bucket}")
+    private String bucketName;
+
     private final BookRepository bookRepository;
     private final CategoryService categoryService;
     private final AuthorService authorService;
     private final LanguageService languageService;
-    private final ImageService imageService;
+    private final AmazonS3 amazonS3;
 
     @Override
     public ResponseBookDto createBook(CreateBookDto createBookDto) {
@@ -54,12 +58,12 @@ public class BookServiceImpl implements BookService {
         return mapBookToResponseBookDto(bookRepository.save(book));
     }
 
-    @Override
-    public void saveImages(Long id, MultipartFile image) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
-        book.setImages(imageService.saveImage(image));
-        bookRepository.save(book);
-    }
+//    @Override
+//    public void saveImages(Long id, MultipartFile image) {
+//        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+//        book.setImages(imageService.saveImage(image));
+//        bookRepository.save(book);
+//    }
 
     @Override
     @Transactional
@@ -171,7 +175,7 @@ public class BookServiceImpl implements BookService {
                         .stream()
                         .map(Author::getName)
                         .toList())
-                .image(imageService.getImageDto(book.getImages()))
+                .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
                 .build();
     }
 
@@ -193,7 +197,7 @@ public class BookServiceImpl implements BookService {
                         .toList())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
-                .image(imageService.getImageDto(book.getImages()))
+                .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
                 .build();
     }
 }

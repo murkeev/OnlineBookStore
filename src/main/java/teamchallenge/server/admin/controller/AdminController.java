@@ -26,11 +26,11 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(createBookDto));
     }
 
-    @PostMapping("/book/{id}/images")
-    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
-        bookService.saveImages(id, images);
-        return ResponseEntity.ok("");
-    }
+//    @PostMapping("/book/{id}/images")
+//    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
+//        bookService.saveImages(id, images);
+//        return ResponseEntity.ok("");
+//    }
 
     @GetMapping("/cart/all")
     public ResponseEntity<List<CartHeaderDto>> getAllCarts() {

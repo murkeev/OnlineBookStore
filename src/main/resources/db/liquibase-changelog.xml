@@ -639,6 +639,108 @@
             VALUES (22, (SELECT id FROM author WHERE name = 'Яніна Яслан'));
         </sql>
     </changeSet>
+
+    <changeSet id="3" author="Dmytro">
+        <!-- Добавление нового столбца для хранения ключа изображения -->
+        <sql>
+            ALTER TABLE book DROP CONSTRAINT IF EXISTS fk_book_image;
+            ALTER TABLE book DROP COLUMN IF EXISTS images_id;
+            DROP TABLE IF EXISTS image;
+            ALTER TABLE book ADD COLUMN image_key VARCHAR(2048);
+        </sql>
+
+        <!-- Обновление данных, если необходимо (например, заполнение image_key для существующих записей) -->
+        <!-- Добавьте свой SQL-запрос для обновления данных -->
+        <sql>
+            UPDATE book
+            SET image_key = 'images/book_1.jpg'
+            WHERE id = 1;
+
+            UPDATE book
+            SET image_key = 'images/book_2.jpg'
+            WHERE id = 2;
+
+            UPDATE book
+            SET image_key = 'images/book_3.jpg'
+            WHERE id = 3;
+
+            UPDATE book
+            SET image_key = 'images/book_4.jpg'
+            WHERE id = 4;
+
+            UPDATE book
+            SET image_key = 'images/book_5.jpg'
+            WHERE id = 5;
+
+            UPDATE book
+            SET image_key = 'images/book_6.jpg'
+            WHERE id = 6;
+
+            UPDATE book
+            SET image_key = 'images/book_7.jpg'
+            WHERE id = 7;
+
+            UPDATE book
+            SET image_key = 'images/book_8.jpg'
+            WHERE id = 8;
+
+            UPDATE book
+            SET image_key = 'images/book_9.jpg'
+            WHERE id = 9;
+
+            UPDATE book
+            SET image_key = 'images/book_10.jpg'
+            WHERE id = 10;
+
+            UPDATE book
+            SET image_key = 'images/book_11.jpg'
+            WHERE id = 11;
+
+            UPDATE book
+            SET image_key = 'images/book_12.jpg'
+            WHERE id = 12;
+
+            UPDATE book
+            SET image_key = 'images/book_13.jpg'
+            WHERE id = 13;
+
+            UPDATE book
+            SET image_key = 'images/book_14.jpg'
+            WHERE id = 14;
+
+            UPDATE book
+            SET image_key = 'images/book_15.jpg'
+            WHERE id = 15;
+
+            UPDATE book
+            SET image_key = 'images/book_16.jpg'
+            WHERE id = 16;
+
+            UPDATE book
+            SET image_key = 'images/book_17.jpg'
+            WHERE id = 17;
+
+            UPDATE book
+            SET image_key = 'images/book_18.jpg'
+            WHERE id = 18;
+
+            UPDATE book
+            SET image_key = 'images/book_19.jpg'
+            WHERE id = 19;
+
+            UPDATE book
+            SET image_key = 'images/book_20.jpg'
+            WHERE id = 20;
+
+            UPDATE book
+            SET image_key = 'images/book_21.jpg'
+            WHERE id = 21;
+
+            UPDATE book
+            SET image_key = 'images/book_22.jpg'
+            WHERE id = 22;
+        </sql>
+    </changeSet>
     <!--&lt;!&ndash; Добавление ролей &ndash;&gt;-->
     <!--    <changeSet id="1" author="ivan">-->
     <!--        <insert tableName="roles">-->

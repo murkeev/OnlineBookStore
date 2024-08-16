@@ -5,7 +5,6 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.category.entity.Category;
-import teamchallenge.server.catalog.image.entity.Image;
 import teamchallenge.server.catalog.language.entity.Language;
 
 import java.time.LocalDateTime;
@@ -49,9 +48,7 @@ public class Book {
     )
     private List<Language> languages;
 
-    @OneToOne
-    private Image images;
-
+    private String imageKey;
 
     private double price;
 

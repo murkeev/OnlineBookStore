@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import teamchallenge.server.catalog.book.exception.BookNotFoundException;
-import teamchallenge.server.catalog.image.exception.FileUploadException;
 import teamchallenge.server.user.exception.UserNotFoundException;
 
 import java.util.HashMap;
@@ -43,8 +42,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
-    @ExceptionHandler(FileUploadException.class)
-    public ResponseEntity<String> handleFileUploadException(FileUploadException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
+//    @ExceptionHandler(FileUploadException.class)
+//    public ResponseEntity<String> handleFileUploadException(FileUploadException e) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//    }
 }

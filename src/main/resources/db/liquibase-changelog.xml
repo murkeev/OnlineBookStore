@@ -741,6 +741,98 @@
             WHERE id = 22;
         </sql>
     </changeSet>
+
+    <changeSet id="4" author="Dmytro">
+        <sql>
+            UPDATE book
+            SET image_key = 'images/book_1.webp'
+            WHERE id = 1;
+
+            UPDATE book
+            SET image_key = 'images/book_2.webp'
+            WHERE id = 2;
+
+            UPDATE book
+            SET image_key = 'images/book_3.webp'
+            WHERE id = 3;
+
+            UPDATE book
+            SET image_key = 'images/book_4.webp'
+            WHERE id = 4;
+
+            UPDATE book
+            SET image_key = 'images/book_5.webp'
+            WHERE id = 5;
+
+            UPDATE book
+            SET image_key = 'images/book_6.webp'
+            WHERE id = 6;
+
+            UPDATE book
+            SET image_key = 'images/book_7.webp'
+            WHERE id = 7;
+
+            UPDATE book
+            SET image_key = 'images/book_8.webp'
+            WHERE id = 8;
+
+            UPDATE book
+            SET image_key = 'images/book_9.webp'
+            WHERE id = 9;
+
+            UPDATE book
+            SET image_key = 'images/book_10.webp'
+            WHERE id = 10;
+
+            UPDATE book
+            SET image_key = 'images/book_11.webp'
+            WHERE id = 11;
+
+            UPDATE book
+            SET image_key = 'images/book_12.webp'
+            WHERE id = 12;
+
+            UPDATE book
+            SET image_key = 'images/book_13.webp'
+            WHERE id = 13;
+
+            UPDATE book
+            SET image_key = 'images/book_14.webp'
+            WHERE id = 14;
+
+            UPDATE book
+            SET image_key = 'images/book_15.webp'
+            WHERE id = 15;
+
+            UPDATE book
+            SET image_key = 'images/book_16.webp'
+            WHERE id = 16;
+
+            UPDATE book
+            SET image_key = 'images/book_17.webp'
+            WHERE id = 17;
+
+            UPDATE book
+            SET image_key = 'images/book_18.webp'
+            WHERE id = 18;
+
+            UPDATE book
+            SET image_key = 'images/book_19.webp'
+            WHERE id = 19;
+
+            UPDATE book
+            SET image_key = 'images/book_20.webp'
+            WHERE id = 20;
+
+            UPDATE book
+            SET image_key = 'images/book_21.webp'
+            WHERE id = 21;
+
+            UPDATE book
+            SET image_key = 'images/book_22.webp'
+            WHERE id = 22;
+        </sql>
+    </changeSet>
     <!--&lt;!&ndash; Добавление ролей &ndash;&gt;-->
     <!--    <changeSet id="1" author="ivan">-->
     <!--        <insert tableName="roles">-->

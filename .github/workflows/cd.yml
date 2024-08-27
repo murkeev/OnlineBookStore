@@ -16,9 +16,6 @@ jobs:
 
       - name: Copy the new JAR file from S3 to EC2
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'eu-central-1'
           S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
         run: aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /downloads/server-1.jar
 

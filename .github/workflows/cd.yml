@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Delete the old JAR file and output.log on EC2
-        run: rm downloads/server-1.jar downloads/output.log
+        run: rm /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log
 
       - name: Copy the new JAR file from S3 to EC2
         env:
@@ -20,7 +20,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'eu-central-1'
           S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
-        run: aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar downloads/server-1.jar
+        run: aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /home/ec2-user/downloads/server-1.jar
 
       - name: Restart the application
-        run: nohup java -jar /downloads/server-1.jar > /downloads/output.log 2>&1 &
+        run: nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2>&1 &

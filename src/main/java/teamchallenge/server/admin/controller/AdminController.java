@@ -32,6 +32,11 @@ public class AdminController {
 //        return ResponseEntity.ok("");
 //    }
 
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok("Test");
+    }
+
     @GetMapping("/cart/all")
     public ResponseEntity<List<CartHeaderDto>> getAllCarts() {
         return ResponseEntity.ok(cartService.getAllCartHeaders());

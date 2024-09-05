@@ -48,7 +48,7 @@ public class AdminController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping("/book/add")
+    @PostMapping("/book/add-book")
     public ResponseEntity<String> addBook(@RequestBody CreateBookDto createBook) {
 
         try {

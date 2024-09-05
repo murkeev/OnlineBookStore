@@ -21,10 +21,10 @@ public class AdminController {
     private final BookService bookService;
     private final CartServiceImpl cartService;
 
-    @PostMapping("/book")
-    public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(createBookDto));
-    }
+//    @PostMapping("/book")
+//    public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(createBookDto));
+//    }
 
 //    @PostMapping("/book/{id}/images")
 //    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
@@ -46,5 +46,16 @@ public class AdminController {
     public ResponseEntity<String> deleteCart(@PathVariable Long id) {
         cartService.deleteCartHeader(id);
         return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/book/add")
+    public ResponseEntity<String> addBook(@RequestBody CreateBookDto createBook) {
+
+        try {
+            bookService.addBook(createBook.getPhoto(), createBook.getTitle(), createBook.getCategoryNames(), createBook.getAuthorNames(), createBook.getDescription(), createBook.getYear(), createBook.getLanguageNames(), createBook.getPrice(), createBook.getTotalQuantity(), createBook.isExpected(), createBook.getDiscount());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Book added successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
+        }
     }
 }

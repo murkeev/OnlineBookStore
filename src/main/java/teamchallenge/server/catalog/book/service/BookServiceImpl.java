@@ -1,6 +1,7 @@
 package teamchallenge.server.catalog.book.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamchallenge.server.catalog.author.entity.Author;
+import teamchallenge.server.catalog.author.entity.AuthorRepository;
 import teamchallenge.server.catalog.author.service.AuthorService;
 import teamchallenge.server.catalog.book.exception.BookNotFoundException;
 import teamchallenge.server.catalog.book.entity.BookRepository;
@@ -19,11 +21,16 @@ import teamchallenge.server.catalog.book.dto.CreateBookDto;
 import teamchallenge.server.catalog.book.dto.ListResponseBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 import teamchallenge.server.catalog.book.entity.Book;
+import teamchallenge.server.catalog.category.entity.Category;
+import teamchallenge.server.catalog.category.entity.CategoryRepository;
 import teamchallenge.server.catalog.category.service.CategoryService;
 import teamchallenge.server.catalog.language.entity.Language;
+import teamchallenge.server.catalog.language.entity.LanguageRepository;
 import teamchallenge.server.catalog.language.service.LanguageService;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,23 +47,26 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
     private final LanguageService languageService;
     private final AmazonS3 amazonS3;
+    private final CategoryRepository categoryRepository;
+    private final AuthorRepository authorRepository;
+    private final LanguageRepository languageRepository;
 
-    @Override
-    public ResponseBookDto createBook(CreateBookDto createBookDto) {
-        Book book = new Book();
-        book.setTitle(createBookDto.getTitle());
-        book.setCategories(categoryService.getCategories(createBookDto.getCategories()));
-        book.setAuthors(authorService.getAuthors(createBookDto.getAuthors()));
-        book.setDescription(createBookDto.getDescription());
-        book.setYear(createBookDto.getYear());
-        book.setPrice(createBookDto.getPrice());
-        book.setTotalQuantity(createBookDto.getTotalQuantity());
-        book.setExpected(createBookDto.isExpected());
-        book.setLanguages(languageService.getLanguages(createBookDto.getLanguages()));
-        book.setDiscount(createBookDto.getDiscount());
-        book.setCreatedAt(LocalDateTime.now());
-        return mapBookToResponseBookDto(bookRepository.save(book));
-    }
+//    @Override
+//    public ResponseBookDto createBook(CreateBookDto createBookDto) {
+//        Book book = new Book();
+//        book.setTitle(createBookDto.getTitle());
+//        book.setCategories(categoryService.getCategories(createBookDto.getCategories()));
+//        book.setAuthors(authorService.getAuthors(createBookDto.getAuthors()));
+//        book.setDescription(createBookDto.getDescription());
+//        book.setYear(createBookDto.getYear());
+//        book.setPrice(createBookDto.getPrice());
+//        book.setTotalQuantity(createBookDto.getTotalQuantity());
+//        book.setExpected(createBookDto.isExpected());
+//        book.setLanguages(languageService.getLanguages(createBookDto.getLanguages()));
+//        book.setDiscount(createBookDto.getDiscount());
+//        book.setCreatedAt(LocalDateTime.now());
+//        return mapBookToResponseBookDto(bookRepository.save(book));
+//    }
 
 //    @Override
 //    public void saveImages(Long id, MultipartFile image) {
@@ -199,5 +209,79 @@ public class BookServiceImpl implements BookService {
                 .isExpected(book.isExpected())
                 .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
                 .build();
+    }
+
+    public void addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
+                        String description, int year, List<String> languageNames, double price,
+                        int totalQuantity, boolean isExpected, Integer discount) throws IOException {
+
+        // Сохранение фото на S3
+        String imageKey = null;
+        if (photo != null && !photo.isEmpty()) {
+            imageKey = saveImageToS3(photo);
+        }
+        // Получение категорий, авторов и языков по их названиям
+        List<Category> categories = (categoryNames != null) ? getCategoriesByName(categoryNames) : new ArrayList<>();
+        List<Author> authors = (authorNames != null) ? getAuthorsByName(authorNames) : new ArrayList<>();
+        List<Language> languages = (languageNames != null) ? getLanguagesByName(languageNames) : new ArrayList<>();
+
+        // Создание и сохранение книги
+        Book book = new Book();
+        book.setTitle(title);
+        book.setCategories(categories);
+        book.setAuthors(authors);
+        book.setDescription(description);
+        book.setYear(year);
+        book.setLanguages(languages);
+        book.setImageKey(imageKey);
+        book.setPrice(price);
+        book.setTotalQuantity(totalQuantity);
+        book.setExpected(isExpected);
+        book.setDiscount(discount);
+
+        bookRepository.save(book);
+    }
+
+    private String saveImageToS3(MultipartFile photo) throws IOException {
+        String fileName = "images/" + System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType("image/webp");
+        metadata.setContentLength(photo.getSize());
+
+        amazonS3.putObject(bucketName, fileName, photo.getInputStream(), metadata);
+        return fileName;
+    }
+
+    private List<Category> getCategoriesByName(List<String> categoryNames) {
+        List<Category> categories = new ArrayList<>();
+        for (String name : categoryNames) {
+            Category category = categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Category not found"));
+            if (category != null) {
+                categories.add(category);
+            }
+        }
+        return categories;
+    }
+
+    private List<Author> getAuthorsByName(List<String> authorNames) {
+        List<Author> authors = new ArrayList<>();
+        for (String name : authorNames) {
+            Author author = authorRepository.findByName(name).orElseThrow(() -> new RuntimeException("Author not found"));
+            if (author != null) {
+                authors.add(author);
+            }
+        }
+        return authors;
+    }
+
+    private List<Language> getLanguagesByName(List<String> languageNames) {
+        List<Language> languages = new ArrayList<>();
+        for (String name : languageNames) {
+            Language language = languageRepository.findByName(name).orElseThrow(() -> new RuntimeException("Language not found"));
+            if (language != null) {
+                languages.add(language);
+            }
+        }
+        return languages;
     }
 }

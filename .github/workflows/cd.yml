@@ -11,6 +11,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Stop the old app on EC2
+        run: pkill -f 'jar server-1.jar
+
       - name: Delete the old JAR file and output.log on EC2
         run: rm /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log
 
@@ -23,4 +26,4 @@ jobs:
         run: aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /home/ec2-user/downloads/server-1.jar
 
       - name: Restart the application
-        run: nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2>&1 &
+        run: nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &

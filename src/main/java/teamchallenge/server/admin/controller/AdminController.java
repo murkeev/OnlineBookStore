@@ -58,4 +58,10 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
         }
     }
+
+    @DeleteMapping("/book/delete-book/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        bookService.deleteBookById(id);
+        return ResponseEntity.ok("");
+    }
 }

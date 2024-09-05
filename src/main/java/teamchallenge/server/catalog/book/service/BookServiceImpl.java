@@ -242,6 +242,10 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
+    public void deleteBookById(Long id){
+        bookRepository.deleteById(id);
+    }
+
     private String saveImageToS3(MultipartFile photo) throws IOException {
         String fileName = "images/" + System.currentTimeMillis() + "_" + photo.getOriginalFilename();
         ObjectMetadata metadata = new ObjectMetadata();

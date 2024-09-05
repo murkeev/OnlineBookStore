@@ -18,6 +18,8 @@ public interface BookService {
 
     ResponseBookDto getBookById(Long id);
 
+    void deleteBookById(Long id);
+
     //Page<ListResponseBookDto> getBooks(Pageable pageable, Long category);
 
     Page<ListResponseBookDto> getBooks(

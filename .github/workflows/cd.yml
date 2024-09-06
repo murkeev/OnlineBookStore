@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Stop the old app on EC2
-        run: pkill -f 'jar server-1.jar
+        run: pkill -f 'jar server-1.jar'
 
       - name: Delete the old JAR file and output.log on EC2
         run: rm /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log

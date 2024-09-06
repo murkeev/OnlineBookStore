@@ -14,12 +14,12 @@ jobs:
       - name: Stop the old app on EC2
         run: |
           pkill -f 'jar server-1.jar' || true
-          sleep 5
+          sleep 10
 
       - name: Delete the old JAR file and output.log on EC2
         run: |
           rm -f /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log
-          sleep 5
+          sleep 10
 
       - name: Copy the new JAR file from S3 to EC2
         env:
@@ -36,6 +36,11 @@ jobs:
 
       - name: Delay for file system operations
         run: sleep 15
+
+      - name: Set execute permissions for JAR file
+        run: |
+          chmod +x /home/ec2-user/downloads/server-1.jar
+          sleep 5
 
       - name: Restart the application
         run: |

@@ -32,7 +32,7 @@ public class AdminController {
 //        return ResponseEntity.ok("");
 //    }
 
-    @GetMapping("/test")
+    @GetMapping("/test2")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("Test");
     }

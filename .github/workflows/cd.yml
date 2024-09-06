@@ -17,24 +17,12 @@ jobs:
       - name: Delete the old JAR file and output.log on EC2
         run: rm /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log
 
-      - name: Copy the new JAR file from S3 to EC2
+      - name: Copy the new JAR file from S3 to EC2 and restart the application
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'eu-central-1'
           S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
         run: |
-          aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /home/ec2-user/downloads/server-1.jar
-          if [ $? -ne 0 ]; then
-            echo "Failed to download JAR from S3"
-            exit 1
-          fi
-
-      - name: Restart the application
-        run: |
-          if [ -f /home/ec2-user/downloads/server-1.jar ]; then
-            nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &
-          else
-            echo "JAR file not found!"
-            exit 1
-          fi
+          aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /home/ec2-user/downloads/server-1.jar && \
+          nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &

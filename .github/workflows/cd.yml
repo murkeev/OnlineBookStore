@@ -46,7 +46,10 @@ jobs:
       - name: Wait before restarting the application
         run: sleep 10
 
-      - name: Restart the application
+  start-application:
+    runs-on: self-hosted
+    needs: deploy
+    steps:
+      - name: Start the application
         run: |
           nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &
-          disown

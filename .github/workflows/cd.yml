@@ -51,6 +51,4 @@ jobs:
     needs: deploy
     steps:
       - name: Start the application
-        run: |
-          screen -dmS myapp
-          screen -S myapp -X stuff 'java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log\n
+        run: RUNNER_TRACKING_ID="" && (nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &)

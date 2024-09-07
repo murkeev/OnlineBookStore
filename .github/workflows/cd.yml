@@ -11,8 +11,17 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Stop the old app on EC2
+        run: pkill -f 'jar /home/ec2-user/downloads/server-1.jar' || true
+
+      - name: Wait for old app to stop
+        run: sleep 10
+
       - name: Delete the old JAR file and output.log on EC2
-        run: rm downloads/server-1.jar downloads/output.log
+        run: rm -f /home/ec2-user/downloads/server-1.jar /home/ec2-user/downloads/output.log
+
+      - name: Wait before copying new JAR
+        run: sleep 10
 
       - name: Copy the new JAR file from S3 to EC2
         env:
@@ -20,7 +29,26 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'eu-central-1'
           S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
-        run: aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar downloads/server-1.jar
+        run: |
+          aws s3 cp s3://$S3_BUCKET/deploy/server-1.jar /home/ec2-user/downloads/server-1.jar
+          if [ $? -ne 0 ]; then
+            echo "Failed to download JAR from S3"
+            exit 1
+          fi
 
-      - name: Restart the application
-        run: nohup java -jar /downloads/server-1.jar > /downloads/output.log 2>&1 &
+      - name: Delay for file system operations
+        run: sleep 15
+
+      - name: Set execute permissions for JAR file
+        run: |
+          chmod +x /home/ec2-user/downloads/server-1.jar
+
+      - name: Wait before restarting the application
+        run: sleep 10
+
+  start-application:
+    runs-on: self-hosted
+    needs: deploy
+    steps:
+      - name: Start the application
+        run: RUNNER_TRACKING_ID="" && (nohup java -jar /home/ec2-user/downloads/server-1.jar > /home/ec2-user/downloads/output.log 2> /home/ec2-user/downloads/errors.log &)

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamchallenge.server.catalog.book.dto.AddImageToBookDto;
 import teamchallenge.server.catalog.book.service.BookService;
 import teamchallenge.server.catalog.book.dto.CreateBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
@@ -55,10 +56,21 @@ public class AdminController {
 
     @PostMapping("/book/add-book")
     public ResponseEntity<String> addBook(@RequestBody CreateBookDto createBook) {
-
+        Long id;
         try {
-            bookService.addBook(createBook.getPhoto(), createBook.getTitle(), createBook.getCategoryNames(), createBook.getAuthorNames(), createBook.getDescription(), createBook.getYear(), createBook.getLanguageNames(), createBook.getPrice(), createBook.getTotalQuantity(), createBook.isExpected(), createBook.getDiscount());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Book added successfully");
+            id = bookService.addBook(createBook.getPhoto(), createBook.getTitle(), createBook.getCategoryNames(), createBook.getAuthorNames(), createBook.getDescription(), createBook.getYear(), createBook.getLanguageNames(), createBook.getPrice(), createBook.getTotalQuantity(), createBook.isExpected(), createBook.getDiscount());
+            return ResponseEntity.status(HttpStatus.CREATED).body(id.toString());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/book/add-image-to-book")
+    public ResponseEntity<String> addImageToBook(@RequestBody AddImageToBookDto addImageToBook) {
+        Long id;
+        try {
+            id = bookService.addImageToBook(addImageToBook.getPhoto(), addImageToBook.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(id.toString());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
         }

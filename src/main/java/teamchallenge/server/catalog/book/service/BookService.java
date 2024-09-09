@@ -34,7 +34,9 @@ public interface BookService {
 
     List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 
-    void addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
+    Long addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
                  String description, int year, List<String> languageNames, double price,
                  int totalQuantity, boolean isExpected, Integer discount) throws IOException;
+
+    Long addImageToBook(MultipartFile photo, Long id) throws IOException;
 }

@@ -186,6 +186,7 @@ public class BookServiceImpl implements BookService {
                         .map(Author::getName)
                         .toList())
                 .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
+                .discount(book.getDiscount())
                 .build();
     }
 
@@ -208,15 +209,17 @@ public class BookServiceImpl implements BookService {
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
+                .discount(book.getDiscount())
                 .build();
     }
 
-    public void addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
+    public Long addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
                         String description, int year, List<String> languageNames, double price,
                         int totalQuantity, boolean isExpected, Integer discount) throws IOException {
 
         // Сохранение фото на S3
         String imageKey = null;
+        Book result;
         if (photo != null && !photo.isEmpty()) {
             imageKey = saveImageToS3(photo);
         }
@@ -239,7 +242,24 @@ public class BookServiceImpl implements BookService {
         book.setExpected(isExpected);
         book.setDiscount(discount);
 
-        bookRepository.save(book);
+        result = bookRepository.save(book);
+        return result.getId();
+    }
+
+    public Long addImageToBook(MultipartFile photo, Long id) throws IOException {
+        Book book = bookRepository.getById(id);
+
+        // Сохранение фото на S3
+        String imageKey = null;
+        Book result;
+        if (photo != null && !photo.isEmpty()) {
+            imageKey = saveImageToS3(photo);
+        }
+
+        book.setImageKey(imageKey);
+
+        result = bookRepository.save(book);
+        return result.getId();
     }
 
     public void deleteBookById(Long id){

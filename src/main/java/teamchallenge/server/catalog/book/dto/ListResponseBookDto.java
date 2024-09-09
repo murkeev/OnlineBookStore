@@ -17,4 +17,5 @@ public class ListResponseBookDto {
     private boolean isExpected;
     private List<String> authors;
     private String imageUrl;
+    private Integer discount;
 }

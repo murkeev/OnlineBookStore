@@ -66,15 +66,17 @@ public class AdminController {
     }
 
     @PostMapping("/book/add-image-to-book")
-    public ResponseEntity<String> addImageToBook(@RequestBody AddImageToBookDto addImageToBook) {
-        Long id;
+    public ResponseEntity<String> addImageToBook(
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("id") Long id) {
         try {
-            id = bookService.addImageToBook(addImageToBook.getPhoto(), addImageToBook.getId());
-            return ResponseEntity.status(HttpStatus.CREATED).body(id.toString());
+            Long bookId = bookService.addImageToBook(photo, id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(bookId.toString());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding image to book: " + e.getMessage());
         }
     }
+
 
     @DeleteMapping("/book/delete-book/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {

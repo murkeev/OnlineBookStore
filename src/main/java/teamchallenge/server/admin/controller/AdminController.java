@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamchallenge.server.catalog.book.dto.AddImageToBookDto;
 import teamchallenge.server.catalog.book.service.BookService;
 import teamchallenge.server.catalog.book.dto.CreateBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
@@ -54,15 +55,30 @@ public class AdminController {
     }
 
     @PostMapping("/book/add-book")
-    public ResponseEntity<String> addBook(@RequestBody CreateBookDto createBook) {
-
+    public ResponseEntity<String> addBook(
+            @RequestParam("photo") MultipartFile photo,
+            @ModelAttribute CreateBookDto createBook) {
+        Long id;
         try {
-            bookService.addBook(createBook.getPhoto(), createBook.getTitle(), createBook.getCategoryNames(), createBook.getAuthorNames(), createBook.getDescription(), createBook.getYear(), createBook.getLanguageNames(), createBook.getPrice(), createBook.getTotalQuantity(), createBook.isExpected(), createBook.getDiscount());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Book added successfully");
+            id = bookService.addBook(photo, createBook);
+            return ResponseEntity.status(HttpStatus.CREATED).body(id.toString());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
         }
     }
+
+    @PostMapping("/book/add-image-to-book")
+    public ResponseEntity<String> addImageToBook(
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("id") Long id) {
+        try {
+            Long bookId = bookService.changeImage(photo, id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(bookId.toString());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding image to book: " + e.getMessage());
+        }
+    }
+
 
     @DeleteMapping("/book/delete-book/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {

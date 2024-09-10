@@ -12,15 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BookService {
-//    ResponseBookDto createBook(CreateBookDto createBookDto);
-
-//    void saveImages(Long id, MultipartFile images);
 
     ResponseBookDto getBookById(Long id);
 
     void deleteBookById(Long id);
-
-    //Page<ListResponseBookDto> getBooks(Pageable pageable, Long category);
 
     Page<ListResponseBookDto> getBooks(
             Pageable pageable,
@@ -34,7 +29,7 @@ public interface BookService {
 
     List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 
-    void addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
-                 String description, int year, List<String> languageNames, double price,
-                 int totalQuantity, boolean isExpected, Integer discount) throws IOException;
+    Long addBook(MultipartFile photo, CreateBookDto createBook) throws IOException;
+
+    Long changeImage(MultipartFile photo, Long id) throws IOException;
 }

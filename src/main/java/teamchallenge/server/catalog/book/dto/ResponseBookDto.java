@@ -20,4 +20,5 @@ public class ResponseBookDto {
     private List<String> authors;
     private List<Category> categories;
     private String imageUrl;
+    private Integer discount;
 }

@@ -67,7 +67,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/book/add-image-to-book")
+    @PostMapping("/book/change-image")
     public ResponseEntity<String> addImageToBook(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("id") Long id) {

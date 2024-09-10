@@ -54,4 +54,16 @@ public class CategoryServiceImpl implements CategoryService {
         String capitalized = category.substring(0, 1).toUpperCase() + category.substring(1);
         return categoryRepository.findByName(capitalized).orElseThrow(() -> new CategoryNotFoundException(capitalized));
     }
+
+    @Override
+    public List<Category> getCategoriesByName(List<String> categoryNames) {
+        List<Category> categories = new ArrayList<>();
+        for (String name : categoryNames) {
+            Category category = categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Category not found"));
+            if (category != null) {
+                categories.add(category);
+            }
+        }
+        return categories;
+    }
 }

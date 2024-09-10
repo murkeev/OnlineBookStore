@@ -55,10 +55,12 @@ public class AdminController {
     }
 
     @PostMapping("/book/add-book")
-    public ResponseEntity<String> addBook(@RequestBody CreateBookDto createBook) {
+    public ResponseEntity<String> addBook(
+            @RequestParam("photo") MultipartFile photo,
+            @ModelAttribute CreateBookDto createBook) {
         Long id;
         try {
-            id = bookService.addBook(createBook.getPhoto(), createBook.getTitle(), createBook.getCategoryNames(), createBook.getAuthorNames(), createBook.getDescription(), createBook.getYear(), createBook.getLanguageNames(), createBook.getPrice(), createBook.getTotalQuantity(), createBook.isExpected(), createBook.getDiscount());
+            id = bookService.addBook(photo, createBook);
             return ResponseEntity.status(HttpStatus.CREATED).body(id.toString());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
@@ -70,7 +72,7 @@ public class AdminController {
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("id") Long id) {
         try {
-            Long bookId = bookService.addImageToBook(photo, id);
+            Long bookId = bookService.changeImage(photo, id);
             return ResponseEntity.status(HttpStatus.CREATED).body(bookId.toString());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding image to book: " + e.getMessage());

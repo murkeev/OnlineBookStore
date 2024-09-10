@@ -1,6 +1,7 @@
 package teamchallenge.server.catalog.book.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import teamchallenge.server.catalog.book.entity.Book;
 import teamchallenge.server.catalog.category.entity.Category;
 import teamchallenge.server.catalog.category.entity.CategoryRepository;
 import teamchallenge.server.catalog.category.service.CategoryService;
+import teamchallenge.server.catalog.image.service.ImageService;
 import teamchallenge.server.catalog.language.entity.Language;
 import teamchallenge.server.catalog.language.entity.LanguageRepository;
 import teamchallenge.server.catalog.language.service.LanguageService;
@@ -39,41 +41,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    @Value("${aws.s3.bucket}")
-    private String bucketName;
-
     private final BookRepository bookRepository;
     private final CategoryService categoryService;
     private final AuthorService authorService;
     private final LanguageService languageService;
-    private final AmazonS3 amazonS3;
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
     private final LanguageRepository languageRepository;
+    private final ImageService imageService;
 
-//    @Override
-//    public ResponseBookDto createBook(CreateBookDto createBookDto) {
-//        Book book = new Book();
-//        book.setTitle(createBookDto.getTitle());
-//        book.setCategories(categoryService.getCategories(createBookDto.getCategories()));
-//        book.setAuthors(authorService.getAuthors(createBookDto.getAuthors()));
-//        book.setDescription(createBookDto.getDescription());
-//        book.setYear(createBookDto.getYear());
-//        book.setPrice(createBookDto.getPrice());
-//        book.setTotalQuantity(createBookDto.getTotalQuantity());
-//        book.setExpected(createBookDto.isExpected());
-//        book.setLanguages(languageService.getLanguages(createBookDto.getLanguages()));
-//        book.setDiscount(createBookDto.getDiscount());
-//        book.setCreatedAt(LocalDateTime.now());
-//        return mapBookToResponseBookDto(bookRepository.save(book));
-//    }
-
-//    @Override
-//    public void saveImages(Long id, MultipartFile image) {
-//        Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
-//        book.setImages(imageService.saveImage(image));
-//        bookRepository.save(book);
-//    }
 
     @Override
     @Transactional
@@ -83,27 +59,6 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
 
-//    @Override
-//    @Transactional
-//    public Page<ListResponseBookDto> getBooks(Pageable pageable, Long category) {
-//        if (category != null) {
-//            return bookRepository.findAllByCategories(categoryService.getCategoryById(category), pageable)
-//                    .map(this::mapBookToListResponseBookDto);
-//        }
-//        return bookRepository.findAll(pageable)
-//                .map(this::mapBookToListResponseBookDto);
-//    }
-
-//    @Override
-//    @Transactional
-//    public Page<ListResponseBookDto> getBooks(Pageable pageable, String category) {
-//        if (category != null) {
-//            return bookRepository.findAllByCategories(categoryService.getCategoryByName(category), pageable)
-//                    .map(this::mapBookToListResponseBookDto);
-//        }
-//        return bookRepository.findAll(pageable)
-//                .map(this::mapBookToListResponseBookDto);
-//    }
 
     @Override
 //    @Transactional
@@ -169,6 +124,63 @@ public class BookServiceImpl implements BookService {
                 .toList();
     }
 
+
+    public Long addBook(MultipartFile photo, CreateBookDto createBook) throws IOException {
+        // Сохранение фото на S3
+        String imageKey = null;
+        Book result;
+        if (photo != null && !photo.isEmpty()) {
+            imageKey = imageService.saveImageToS3(photo);
+        }
+        // Получение категорий, авторов и языков по их названиям
+        List<Category> categories = (createBook.getCategoryNames() != null) ? categoryService.getCategoriesByName(createBook.getCategoryNames()) : new ArrayList<>();
+        List<Author> authors = (createBook.getAuthorNames() != null) ? authorService.getAuthorsByName(createBook.getAuthorNames()) : new ArrayList<>();
+        List<Language> languages = (createBook.getLanguageNames() != null) ? languageService.getLanguagesByName(createBook.getLanguageNames()) : new ArrayList<>();
+
+        // Создание и сохранение книги
+        Book book = new Book();
+        book.setTitle(createBook.getTitle());
+        book.setCategories(categories);
+        book.setAuthors(authors);
+        book.setDescription(createBook.getDescription());
+        book.setYear(createBook.getYear());
+        book.setLanguages(languages);
+        book.setImageKey(imageKey);
+        book.setPrice(createBook.getPrice());
+        book.setTotalQuantity(createBook.getTotalQuantity());
+        book.setExpected(createBook.isExpected());
+        book.setDiscount(createBook.getDiscount());
+
+        result = bookRepository.save(book);
+        return result.getId();
+    }
+
+    public Long changeImage(MultipartFile photo, Long id) throws IOException {
+        Book book = bookRepository.getById(id);
+        String oldImageKey = book.getImageKey();
+        String newImageKey = null;
+        if (photo != null && !photo.isEmpty()) {
+            newImageKey = imageService.saveImageToS3(photo);
+            if (oldImageKey != null) {
+                imageService.deleteImageFromS3(oldImageKey);
+            }
+        } else if (photo == null || photo.isEmpty()) {
+            if (oldImageKey != null) {
+                imageService.deleteImageFromS3(oldImageKey);
+            }
+            newImageKey = null;
+        }
+        book.setImageKey(newImageKey);
+        Book result = bookRepository.save(book);
+        return result.getId();
+    }
+
+    public void deleteBookById(Long id){
+        bookRepository.deleteById(id);
+    }
+
+
+
     private ListResponseBookDto mapBookToListResponseBookDto(Book book) {
         return ListResponseBookDto.builder()
                 .id(book.getId())
@@ -185,7 +197,7 @@ public class BookServiceImpl implements BookService {
                         .stream()
                         .map(Author::getName)
                         .toList())
-                .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
+                .imageUrl(imageService.getImageUrl(book.getImageKey()))
                 .discount(book.getDiscount())
                 .build();
     }
@@ -208,104 +220,8 @@ public class BookServiceImpl implements BookService {
                         .toList())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
-                .imageUrl(amazonS3.getUrl(bucketName, book.getImageKey()).toString())
+                .imageUrl(imageService.getImageUrl(book.getImageKey()))
                 .discount(book.getDiscount())
                 .build();
-    }
-
-    public Long addBook(MultipartFile photo, String title, List<String> categoryNames, List<String> authorNames,
-                        String description, int year, List<String> languageNames, double price,
-                        int totalQuantity, boolean isExpected, Integer discount) throws IOException {
-
-        // Сохранение фото на S3
-        String imageKey = null;
-        Book result;
-        if (photo != null && !photo.isEmpty()) {
-            imageKey = saveImageToS3(photo);
-        }
-        // Получение категорий, авторов и языков по их названиям
-        List<Category> categories = (categoryNames != null) ? getCategoriesByName(categoryNames) : new ArrayList<>();
-        List<Author> authors = (authorNames != null) ? getAuthorsByName(authorNames) : new ArrayList<>();
-        List<Language> languages = (languageNames != null) ? getLanguagesByName(languageNames) : new ArrayList<>();
-
-        // Создание и сохранение книги
-        Book book = new Book();
-        book.setTitle(title);
-        book.setCategories(categories);
-        book.setAuthors(authors);
-        book.setDescription(description);
-        book.setYear(year);
-        book.setLanguages(languages);
-        book.setImageKey(imageKey);
-        book.setPrice(price);
-        book.setTotalQuantity(totalQuantity);
-        book.setExpected(isExpected);
-        book.setDiscount(discount);
-
-        result = bookRepository.save(book);
-        return result.getId();
-    }
-
-    public Long addImageToBook(MultipartFile photo, Long id) throws IOException {
-        Book book = bookRepository.getById(id);
-
-        // Сохранение фото на S3
-        String imageKey = null;
-        Book result;
-        if (photo != null && !photo.isEmpty()) {
-            imageKey = saveImageToS3(photo);
-        }
-
-        book.setImageKey(imageKey);
-
-        result = bookRepository.save(book);
-        return result.getId();
-    }
-
-    public void deleteBookById(Long id){
-        bookRepository.deleteById(id);
-    }
-
-    private String saveImageToS3(MultipartFile photo) throws IOException {
-        String fileName = "images/" + System.currentTimeMillis() + "_" + photo.getOriginalFilename();
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("image/webp");
-        metadata.setContentLength(photo.getSize());
-
-        amazonS3.putObject(bucketName, fileName, photo.getInputStream(), metadata);
-        return fileName;
-    }
-
-    private List<Category> getCategoriesByName(List<String> categoryNames) {
-        List<Category> categories = new ArrayList<>();
-        for (String name : categoryNames) {
-            Category category = categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Category not found"));
-            if (category != null) {
-                categories.add(category);
-            }
-        }
-        return categories;
-    }
-
-    private List<Author> getAuthorsByName(List<String> authorNames) {
-        List<Author> authors = new ArrayList<>();
-        for (String name : authorNames) {
-            Author author = authorRepository.findByName(name).orElseThrow(() -> new RuntimeException("Author not found"));
-            if (author != null) {
-                authors.add(author);
-            }
-        }
-        return authors;
-    }
-
-    private List<Language> getLanguagesByName(List<String> languageNames) {
-        List<Language> languages = new ArrayList<>();
-        for (String name : languageNames) {
-            Language language = languageRepository.findByName(name).orElseThrow(() -> new RuntimeException("Language not found"));
-            if (language != null) {
-                languages.add(language);
-            }
-        }
-        return languages;
     }
 }

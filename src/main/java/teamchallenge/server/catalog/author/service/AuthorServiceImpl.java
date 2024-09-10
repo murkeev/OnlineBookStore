@@ -32,4 +32,16 @@ public class AuthorServiceImpl implements AuthorService {
         return author;
     }
 
+    @Override
+    public List<Author> getAuthorsByName(List<String> authorNames) {
+        List<Author> authors = new ArrayList<>();
+        for (String name : authorNames) {
+            Author author = authorRepository.findByName(name).orElseThrow(() -> new RuntimeException("Author not found"));
+            if (author != null) {
+                authors.add(author);
+            }
+        }
+        return authors;
+    }
+
 }

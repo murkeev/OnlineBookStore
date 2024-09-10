@@ -69,7 +69,7 @@ public class AdminController {
 
     @PostMapping("/book/change-image")
     public ResponseEntity<String> addImageToBook(
-            @RequestParam("photo") MultipartFile photo,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam("id") Long id) {
         try {
             Long bookId = bookService.changeImage(photo, id);

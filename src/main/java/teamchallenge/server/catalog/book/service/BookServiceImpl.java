@@ -176,6 +176,11 @@ public class BookServiceImpl implements BookService {
     }
 
     public void deleteBookById(Long id){
+        Book book = bookRepository.getById(id);
+        String oldImageKey = book.getImageKey();
+        if (oldImageKey != null) {
+            imageService.deleteImageFromS3(oldImageKey);
+        }
         bookRepository.deleteById(id);
     }
 

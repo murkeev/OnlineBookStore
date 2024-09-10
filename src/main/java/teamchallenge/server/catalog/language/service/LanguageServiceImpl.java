@@ -36,4 +36,16 @@ public class LanguageServiceImpl implements LanguageService {
         return language;
     }
 
+    @Override
+    public List<Language> getLanguagesByName(List<String> languageNames) {
+        List<Language> languages = new ArrayList<>();
+        for (String name : languageNames) {
+            Language language = languageRepository.findByName(name).orElseThrow(() -> new RuntimeException("Language not found"));
+            if (language != null) {
+                languages.add(language);
+            }
+        }
+        return languages;
+    }
+
 }

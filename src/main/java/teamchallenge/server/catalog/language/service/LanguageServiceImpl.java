@@ -29,6 +29,10 @@ public class LanguageServiceImpl implements LanguageService {
         return result;
     }
 
+    public List<Language> getAllLanguages() {
+        return languageRepository.findAll();
+    }
+
     private Language createAndGetLanguage(String name) {
         Language language = new Language();
         language.setName(name.toLowerCase());

@@ -5,9 +5,9 @@ import teamchallenge.server.catalog.category.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getCategories(List<String> categories);
+    List<Category> getAllCategories(List<String> categories);
 
-    List<Category> getCategories();
+    List<Category> getAllCategories();
 
     void createCategory(String name);
 

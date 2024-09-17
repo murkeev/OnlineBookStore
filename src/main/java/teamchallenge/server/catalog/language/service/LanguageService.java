@@ -8,5 +8,7 @@ import java.util.List;
 public interface LanguageService {
     List<Language> getLanguages(List<String> languages);
 
+    List<Language> getAllLanguages();
+
     List<Language> getLanguagesByName(List<String> languageNames);
 }

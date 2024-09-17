@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getCategories(List<String> categories) {
+    public List<Category> getAllCategories(List<String> categories) {
 
         List<Category> result = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getCategories() {
+    public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 

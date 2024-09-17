@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamchallenge.server.admin.service.AdminService;
+import teamchallenge.server.cart.service.CartService;
 import teamchallenge.server.catalog.book.dto.AddImageToBookDto;
+import teamchallenge.server.catalog.book.dto.ResponseListsDto;
 import teamchallenge.server.catalog.book.service.BookService;
 import teamchallenge.server.catalog.book.dto.CreateBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
@@ -20,18 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final BookService bookService;
-    private final CartServiceImpl cartService;
+    private final CartService cartService;
+    private final AdminService adminService;
 
-//    @PostMapping("/book")
-//    public ResponseEntity<ResponseBookDto> createBook(@RequestBody CreateBookDto createBookDto) {
-//        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(createBookDto));
-//    }
-
-//    @PostMapping("/book/{id}/images")
-//    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile images, @PathVariable Long id) {
-//        bookService.saveImages(id, images);
-//        return ResponseEntity.ok("");
-//    }
 
     @GetMapping("/test2")
     public ResponseEntity<?> test() {
@@ -79,10 +73,14 @@ public class AdminController {
         }
     }
 
-
     @DeleteMapping("/book/delete-book/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         bookService.deleteBookById(id);
         return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/book/get-all-lists")
+    public ResponseEntity<ResponseListsDto> getAllLists() {
+        return ResponseEntity.ok(adminService.getAllLists());
     }
 }

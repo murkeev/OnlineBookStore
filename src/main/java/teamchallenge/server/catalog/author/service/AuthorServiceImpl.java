@@ -25,6 +25,11 @@ public class AuthorServiceImpl implements AuthorService {
         return result;
     }
 
+    @Override
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
+    }
+
     private Author createAndGetAuthor(String name) {
         Author author = new Author();
         author.setName(WordUtils.capitalizeFully(name.toLowerCase()));

@@ -1,10 +1,13 @@
 package teamchallenge.server.catalog.author.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.author.entity.AuthorRepository;
+import teamchallenge.server.catalog.book.entity.BookRepository;
+import teamchallenge.server.catalog.category.entity.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public List<Author> getAuthors(List<String> authors) {
@@ -23,6 +27,11 @@ public class AuthorServiceImpl implements AuthorService {
             result.add(author);
         }
         return result;
+    }
+
+    @Override
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
     }
 
     private Author createAndGetAuthor(String name) {
@@ -42,6 +51,31 @@ public class AuthorServiceImpl implements AuthorService {
             }
         }
         return authors;
+    }
+
+    @Override
+    public Author addAuthor(String authorName) {
+        if (authorRepository.existsByName(authorName)) {
+            throw new IllegalArgumentException("Author already exist");
+        }
+
+        Author author = new Author();
+        author.setName(authorName);
+        return authorRepository.save(author);
+    }
+
+    // Удаление категории с проверкой привязанных книг
+    @Override
+    public void deleteAuthor(Long authorId) {
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+
+        // Проверяем, есть ли книги, привязанные к категории
+        if (bookRepository.existsByAuthors(author)) {
+            throw new IllegalArgumentException("Cannot delete category, books are linked to it");
+        }
+
+        authorRepository.delete(author);
     }
 
 }

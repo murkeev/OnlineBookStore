@@ -71,7 +71,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         // Проверяем, есть ли книги, привязанные к категории
         if (bookRepository.existsByAuthors(author)) {
-            throw new IllegalArgumentException("Cannot delete category, books are linked to it");
+            throw new IllegalArgumentException("Cannot delete author, books are linked to it");
         }
 
         authorRepository.delete(author);

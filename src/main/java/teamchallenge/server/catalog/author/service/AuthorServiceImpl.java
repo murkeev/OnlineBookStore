@@ -64,7 +64,6 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.save(author);
     }
 
-    // Удаление категории с проверкой привязанных книг
     @Override
     public void deleteAuthor(Long authorId) {
         Author author = authorRepository.findById(authorId)
@@ -72,7 +71,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         // Проверяем, есть ли книги, привязанные к категории
         if (bookRepository.existsByAuthors(author)) {
-            throw new IllegalArgumentException("Cannot delete category, books are linked to it");
+            throw new IllegalArgumentException("Cannot delete author, books are linked to it");
         }
 
         authorRepository.delete(author);

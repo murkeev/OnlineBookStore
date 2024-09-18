@@ -1,5 +1,6 @@
 package teamchallenge.server.admin.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import teamchallenge.server.admin.service.AdminService;
 import teamchallenge.server.cart.service.CartService;
+import teamchallenge.server.catalog.author.entity.Author;
+import teamchallenge.server.catalog.author.service.AuthorService;
 import teamchallenge.server.catalog.book.dto.AddImageToBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseListsDto;
 import teamchallenge.server.catalog.book.service.BookService;
@@ -15,6 +18,10 @@ import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 import teamchallenge.server.cart.entity.CartHeader;
 import teamchallenge.server.cart.dto.CartHeaderDto;
 import teamchallenge.server.cart.service.CartServiceImpl;
+import teamchallenge.server.catalog.category.entity.Category;
+import teamchallenge.server.catalog.category.service.CategoryService;
+import teamchallenge.server.catalog.language.entity.Language;
+import teamchallenge.server.catalog.language.service.LanguageService;
 
 import java.util.List;
 
@@ -25,6 +32,9 @@ public class AdminController {
     private final BookService bookService;
     private final CartService cartService;
     private final AdminService adminService;
+    private final CategoryService categoryService;
+    private final AuthorService authorService;
+    private final LanguageService languageService;
 
 
     @GetMapping("/test2")
@@ -83,4 +93,65 @@ public class AdminController {
     public ResponseEntity<ResponseListsDto> getAllLists() {
         return ResponseEntity.ok(adminService.getAllLists());
     }
+
+    @PostMapping("/category/add")
+    public ResponseEntity<String> addCategory(@RequestParam String name) {
+        try {
+            Category category = categoryService.addCategory(name);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Category added: " + category.getName());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/category/delete/{id}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+        try {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Category deleted");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/author/add")
+    public ResponseEntity<String> addAuthor(@RequestParam String name) {
+        try {
+            Author author = authorService.addAuthor(name);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Author added: " + author.getName());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/author/delete/{id}")
+    public ResponseEntity<String> deleteAuthor(@PathVariable Long id) {
+        try {
+            authorService.deleteAuthor(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Author deleted");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/language/add")
+    public ResponseEntity<String> addLanguage(@RequestParam String name) {
+        try {
+            Language language = languageService.addLanguage(name);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Language added: " + language.getName());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/language/delete/{id}")
+    public ResponseEntity<String> deleteLanguage(@PathVariable Long id) {
+        try {
+            languageService.deleteLanguage(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Language deleted");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }

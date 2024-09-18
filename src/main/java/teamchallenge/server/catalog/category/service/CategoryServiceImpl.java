@@ -1,8 +1,10 @@
 package teamchallenge.server.catalog.category.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.WordUtils;
 import org.springframework.stereotype.Service;
+import teamchallenge.server.catalog.book.entity.BookRepository;
 import teamchallenge.server.catalog.category.exception.CategoryNotFoundException;
 import teamchallenge.server.catalog.category.entity.Category;
 import teamchallenge.server.catalog.category.entity.CategoryRepository;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public List<Category> getAllCategories(List<String> categories) {
@@ -40,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public void createCategory(String name) {
-        // TODO document why this method is empty
+
     }
 
     @Override
@@ -65,5 +68,31 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         return categories;
+    }
+
+    // Добавление категории
+    @Override
+    public Category addCategory(String categoryName) {
+        if (categoryRepository.existsByName(categoryName)) {
+            throw new IllegalArgumentException("Category already exist");
+        }
+
+        Category category = new Category();
+        category.setName(categoryName);
+        return categoryRepository.save(category);
+    }
+
+    // Удаление категории с проверкой привязанных книг
+    @Override
+    public void deleteCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        // Проверяем, есть ли книги, привязанные к категории
+        if (bookRepository.existsByCategories(category)) {
+            throw new IllegalArgumentException("Cannot delete category, books are linked to it");
+        }
+
+        categoryRepository.delete(category);
     }
 }

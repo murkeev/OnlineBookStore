@@ -64,7 +64,6 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.save(author);
     }
 
-    // Удаление категории с проверкой привязанных книг
     @Override
     public void deleteAuthor(Long authorId) {
         Author author = authorRepository.findById(authorId)

@@ -2,7 +2,9 @@ package teamchallenge.server.catalog.book.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.category.entity.Category;
+import teamchallenge.server.catalog.language.entity.Language;
 
 import java.util.List;
 
@@ -16,9 +18,10 @@ public class ResponseBookDto {
     private double price;
     private int totalQuantity;
     private boolean isExpected;
-    private List<String> languages;
-    private List<String> authors;
+    private List<Language> languages;
+    private List<Author> authors;
     private List<Category> categories;
     private String imageUrl;
     private Integer discount;
+    private double discountPrice;
 }

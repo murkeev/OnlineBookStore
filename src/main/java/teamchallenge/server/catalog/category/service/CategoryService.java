@@ -20,4 +20,6 @@ public interface CategoryService {
     Category addCategory(String categoryName);
 
     void deleteCategory(Long categoryId);
+
+    void editCategory(Long categoryId, String name);
 }

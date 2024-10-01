@@ -95,4 +95,12 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.delete(category);
     }
+
+    @Override
+    public void editCategory(Long categoryId, String name){
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        category.setName(name);
+        categoryRepository.save(category);
+    }
 }

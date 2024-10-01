@@ -12,4 +12,5 @@ public class ResponseListsDto {
     private List<Language> languages;
     private List<Author> authors;
     private List<Category> categories;
+    private List<Integer> years;
 }

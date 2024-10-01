@@ -32,6 +32,7 @@ import teamchallenge.server.catalog.language.service.LanguageService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -184,6 +185,11 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    @Override
+    public List<Integer> getAllYears(){
+        return bookRepository.findAllYears();
+    }
+
 
 
     private ListResponseBookDto mapBookToListResponseBookDto(Book book) {
@@ -212,21 +218,16 @@ public class BookServiceImpl implements BookService {
                 .id(book.getId())
                 .title(book.getTitle())
                 .categories(book.getCategories())
-                .authors(book.getAuthors()
-                        .stream()
-                        .map(Author::getName)
-                        .toList())
+                .authors(book.getAuthors())
                 .description(book.getDescription())
                 .year(book.getYear())
                 .price(book.getPrice())
-                .languages(book.getLanguages()
-                        .stream()
-                        .map(Language::getName)
-                        .toList())
+                .languages(book.getLanguages())
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .imageUrl(imageService.getImageUrl(book.getImageKey()))
                 .discount(book.getDiscount())
+                .discountPrice(book.getPrice()-((book.getPrice()*book.getDiscount())/100))
                 .build();
     }
 }

@@ -18,4 +18,5 @@ public class ListResponseBookDto {
     private List<String> authors;
     private String imageUrl;
     private Integer discount;
+    private double discountPrice;
 }

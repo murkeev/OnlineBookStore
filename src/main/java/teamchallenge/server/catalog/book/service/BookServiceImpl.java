@@ -210,6 +210,7 @@ public class BookServiceImpl implements BookService {
                         .toList())
                 .imageUrl(imageService.getImageUrl(book.getImageKey()))
                 .discount(book.getDiscount())
+                .discountPrice(book.getPrice()-((book.getPrice()*book.getDiscount())/100))
                 .build();
     }
 

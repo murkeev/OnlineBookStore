@@ -9,6 +9,7 @@ import teamchallenge.server.catalog.book.dto.ListResponseBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 
 import java.io.IOException;
+import java.time.Year;
 import java.util.List;
 
 public interface BookService {
@@ -32,4 +33,6 @@ public interface BookService {
     Long addBook(MultipartFile photo, CreateBookDto createBook) throws IOException;
 
     Long changeImage(MultipartFile photo, Long id) throws IOException;
+
+    List<Integer> getAllYears();
 }

@@ -114,6 +114,16 @@ public class AdminController {
         }
     }
 
+    @PatchMapping("/category/edit/{id}")
+    public ResponseEntity<String> editCategory(@PathVariable Long id, @RequestParam String name) {
+        try {
+            categoryService.editCategory(id, name);
+            return ResponseEntity.status(HttpStatus.OK).body("Category edited");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/author/add")
     public ResponseEntity<String> addAuthor(@RequestParam String name) {
         try {
@@ -153,5 +163,4 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 }

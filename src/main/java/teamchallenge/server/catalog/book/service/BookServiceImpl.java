@@ -36,6 +36,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -209,8 +210,8 @@ public class BookServiceImpl implements BookService {
                         .map(Author::getName)
                         .toList())
                 .imageUrl(imageService.getImageUrl(book.getImageKey()))
-                .discount(book.getDiscount())
-                .discountPrice(book.getPrice()-((book.getPrice()*book.getDiscount())/100))
+                .discount(Optional.ofNullable(book.getDiscount()).orElse(0))
+                .discountPrice(book.getPrice()-((book.getPrice()*Optional.ofNullable(book.getDiscount()).orElse(0))/100))
                 .build();
     }
 
@@ -227,8 +228,8 @@ public class BookServiceImpl implements BookService {
                 .totalQuantity(book.getTotalQuantity())
                 .isExpected(book.isExpected())
                 .imageUrl(imageService.getImageUrl(book.getImageKey()))
-                .discount(book.getDiscount())
-                .discountPrice(book.getPrice()-((book.getPrice()*book.getDiscount())/100))
+                .discount(Optional.ofNullable(book.getDiscount()).orElse(0))
+                .discountPrice(book.getPrice()-((book.getPrice()*Optional.ofNullable(book.getDiscount()).orElse(0))/100))
                 .build();
     }
 }

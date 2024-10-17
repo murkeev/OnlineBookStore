@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.author.entity.AuthorRepository;
 import teamchallenge.server.catalog.author.service.AuthorService;
+import teamchallenge.server.catalog.book.dto.UpdateBookDto;
 import teamchallenge.server.catalog.book.exception.BookNotFoundException;
 import teamchallenge.server.catalog.book.entity.BookRepository;
 import teamchallenge.server.catalog.book.BookSearchCriteria;
@@ -155,6 +156,61 @@ public class BookServiceImpl implements BookService {
 
         result = bookRepository.save(book);
         return result.getId();
+    }
+
+    @Transactional
+    public Long updateBook(Long id, UpdateBookDto updateBookDto) {
+        // Найти книгу по ID
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+
+        // Обновляем только те поля, которые переданы
+        if (updateBookDto.getTitle() != null) {
+            book.setTitle(updateBookDto.getTitle());
+        }
+
+        if (updateBookDto.getDescription() != null) {
+            book.setDescription(updateBookDto.getDescription());
+        }
+
+        if (updateBookDto.getYear() != null) {
+            book.setYear(updateBookDto.getYear());
+        }
+
+        if (updateBookDto.getPrice() != null) {
+            book.setPrice(updateBookDto.getPrice());
+        }
+
+        if (updateBookDto.getTotalQuantity() != null) {
+            book.setTotalQuantity(updateBookDto.getTotalQuantity());
+        }
+
+        if (updateBookDto.getIsExpected() != null) {
+            book.setExpected(updateBookDto.getIsExpected());
+        }
+
+        if (updateBookDto.getDiscount() != null) {
+            book.setDiscount(updateBookDto.getDiscount());
+        }
+
+        // Обновляем авторов, категории и языки только если переданы их новые значения
+        if (updateBookDto.getAuthorNames() != null && !updateBookDto.getAuthorNames().isEmpty()) {
+            List<Author> authors = authorService.getAuthorsByName(updateBookDto.getAuthorNames());
+            book.setAuthors(authors);
+        }
+
+        if (updateBookDto.getCategoryNames() != null && !updateBookDto.getCategoryNames().isEmpty()) {
+            List<Category> categories = categoryService.getCategoriesByName(updateBookDto.getCategoryNames());
+            book.setCategories(categories);
+        }
+
+        if (updateBookDto.getLanguageNames() != null && !updateBookDto.getLanguageNames().isEmpty()) {
+            List<Language> languages = languageService.getLanguagesByName(updateBookDto.getLanguageNames());
+            book.setLanguages(languages);
+        }
+
+        // Сохраняем обновленную книгу
+        return bookRepository.save(book).getId();
     }
 
     public Long changeImage(MultipartFile photo, Long id) throws IOException {

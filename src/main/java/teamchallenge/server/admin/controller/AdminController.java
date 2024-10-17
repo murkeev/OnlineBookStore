@@ -10,11 +10,8 @@ import teamchallenge.server.admin.service.AdminService;
 import teamchallenge.server.cart.service.CartService;
 import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.author.service.AuthorService;
-import teamchallenge.server.catalog.book.dto.AddImageToBookDto;
-import teamchallenge.server.catalog.book.dto.ResponseListsDto;
+import teamchallenge.server.catalog.book.dto.*;
 import teamchallenge.server.catalog.book.service.BookService;
-import teamchallenge.server.catalog.book.dto.CreateBookDto;
-import teamchallenge.server.catalog.book.dto.ResponseBookDto;
 import teamchallenge.server.cart.entity.CartHeader;
 import teamchallenge.server.cart.dto.CartHeaderDto;
 import teamchallenge.server.cart.service.CartServiceImpl;
@@ -69,6 +66,17 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding book: " + e.getMessage());
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateBook(
+            @PathVariable Long id,
+            @RequestBody UpdateBookDto updateBookDto) {
+        // Вызов сервиса для обновления книги
+        Long updatedBookId = bookService.updateBook(id, updateBookDto);
+
+        // Возвращаем успешный ответ с ID обновленной книги
+        return ResponseEntity.ok("Book updated successfully with ID: " + updatedBookId);
     }
 
     @PostMapping("/book/change-image")
@@ -144,6 +152,16 @@ public class AdminController {
         }
     }
 
+    @PatchMapping("/author/edit/{id}")
+    public ResponseEntity<String> editAuthor(@PathVariable Long id, @RequestParam String name) {
+        try {
+            authorService.editAuthor(id, name);
+            return ResponseEntity.status(HttpStatus.OK).body("Author edited");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/language/add")
     public ResponseEntity<String> addLanguage(@RequestParam String name) {
         try {
@@ -159,6 +177,16 @@ public class AdminController {
         try {
             languageService.deleteLanguage(id);
             return ResponseEntity.status(HttpStatus.OK).body("Language deleted");
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/language/edit/{id}")
+    public ResponseEntity<String> editLanguage(@PathVariable Long id, @RequestParam String name) {
+        try {
+            languageService.editLanguage(id, name);
+            return ResponseEntity.status(HttpStatus.OK).body("Language edited");
         } catch (IllegalArgumentException | EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

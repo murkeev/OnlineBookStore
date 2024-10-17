@@ -8,6 +8,7 @@ import teamchallenge.server.catalog.author.entity.Author;
 import teamchallenge.server.catalog.author.entity.AuthorRepository;
 import teamchallenge.server.catalog.book.entity.BookRepository;
 import teamchallenge.server.catalog.category.entity.Category;
+import teamchallenge.server.catalog.language.entity.Language;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,14 @@ public class AuthorServiceImpl implements AuthorService {
         }
 
         authorRepository.delete(author);
+    }
+
+    @Override
+    public void editAuthor(Long authorId, String name){
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        author.setName(name);
+        authorRepository.save(author);
     }
 
 }

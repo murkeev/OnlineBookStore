@@ -80,4 +80,12 @@ public class LanguageServiceImpl implements LanguageService {
         languageRepository.delete(language);
     }
 
+    @Override
+    public void editLanguage(Long languageId, String name){
+        Language language = languageRepository.findById(languageId)
+                .orElseThrow(() -> new EntityNotFoundException("Language not found"));
+        language.setName(name);
+        languageRepository.save(language);
+    }
+
 }

@@ -7,6 +7,7 @@ import teamchallenge.server.catalog.book.BookSearchCriteria;
 import teamchallenge.server.catalog.book.dto.CreateBookDto;
 import teamchallenge.server.catalog.book.dto.ListResponseBookDto;
 import teamchallenge.server.catalog.book.dto.ResponseBookDto;
+import teamchallenge.server.catalog.book.dto.UpdateBookDto;
 
 import java.io.IOException;
 import java.time.Year;
@@ -31,6 +32,8 @@ public interface BookService {
     List<ResponseBookDto> searchBooks(BookSearchCriteria criteria);
 
     Long addBook(MultipartFile photo, CreateBookDto createBook) throws IOException;
+
+    Long updateBook(Long id, UpdateBookDto updateBookDto)ж
 
     Long changeImage(MultipartFile photo, Long id) throws IOException;
 

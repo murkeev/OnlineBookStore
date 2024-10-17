@@ -15,4 +15,6 @@ public interface LanguageService {
     Language addLanguage(String languageName);
 
     void deleteLanguage(Long languageId);
+
+    void editLanguage(Long languageId, String name);
 }

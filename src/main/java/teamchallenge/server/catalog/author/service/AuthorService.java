@@ -16,4 +16,6 @@ public interface AuthorService {
 
     void deleteAuthor(Long authorId);
 
+    void editAuthor(Long authorId, String name);
+
 }

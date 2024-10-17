@@ -33,7 +33,7 @@ public interface BookService {
 
     Long addBook(MultipartFile photo, CreateBookDto createBook) throws IOException;
 
-    Long updateBook(Long id, UpdateBookDto updateBookDto)ж
+    Long updateBook(Long id, UpdateBookDto updateBookDto);
 
     Long changeImage(MultipartFile photo, Long id) throws IOException;
 
